@@ -275,8 +275,8 @@ if (!function_exists('tinymce7DetectToolbarPreset')) {
             'basic' => 'basic',
             'legacy' => 'legacy',
             'classic' => 'legacy',
-            'full' => 'legacy',
-            'advanced' => 'legacy',
+            'full' => 'full',
+            'advanced' => 'full',
         ];
 
         foreach ($keys as $key) {
@@ -416,17 +416,27 @@ if (!function_exists('tinymce7ApplyToolbarPreset')) {
 if (!function_exists('tinymce7ApplyMenubarPreference')) {
     function tinymce7ApplyMenubarPreference(array $config): array
     {
-        if (array_key_exists('menubar', $config)) {
-            return $config;
-        }
-
         $preference = tinymce7DetectMenubarPreference();
 
         if ($preference === null) {
             return $config;
         }
 
-        $config['menubar'] = $preference;
+        if ($preference === false) {
+            $config['menubar'] = false;
+
+            return $config;
+        }
+
+        if (!array_key_exists('menubar', $config)) {
+            $config['menubar'] = true;
+
+            return $config;
+        }
+
+        if (is_bool($config['menubar'])) {
+            $config['menubar'] = true;
+        }
 
         return $config;
     }
@@ -544,6 +554,7 @@ if (!function_exists('tinymce7RenderSystemSettingsTab')) {
             ['value' => 'simple', 'label' => tinymce7Lang('tinymce7_toolbar_simple', 'Simple')],
             ['value' => 'basic', 'label' => tinymce7Lang('tinymce7_toolbar_basic', 'Basic')],
             ['value' => 'legacy', 'label' => tinymce7Lang('tinymce7_toolbar_legacy', 'Legacy (Default)')],
+            ['value' => 'full', 'label' => tinymce7Lang('tinymce7_toolbar_full', 'Full')],
         ];
         $options = [
             ['value' => '', 'label' => tinymce7Lang('tinymce7_entermode_default', 'TinyMCE default (paragraph)')],

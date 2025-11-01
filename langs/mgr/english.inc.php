@@ -5,6 +5,7 @@ $_lang['tinymce7_toolbar_description'] = 'Choose the TinyMCE 7 toolbar configura
 $_lang['tinymce7_toolbar_simple'] = 'Simple';
 $_lang['tinymce7_toolbar_basic'] = 'Basic';
 $_lang['tinymce7_toolbar_legacy'] = 'Legacy (default)';
+$_lang['tinymce7_toolbar_full'] = 'Full';
 $_lang['tinymce7_menubar_label'] = 'Menubar visibility';
 $_lang['tinymce7_menubar_description'] = 'Choose whether TinyMCE 7 displays the menubar.';
 $_lang['tinymce7_menubar_default'] = 'TinyMCE default (show)';

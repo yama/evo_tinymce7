@@ -5,6 +5,7 @@ $_lang['tinymce7_toolbar_description'] = 'TinyMCE 7 のツールバー構成を�
 $_lang['tinymce7_toolbar_simple'] = 'シンプル';
 $_lang['tinymce7_toolbar_basic'] = '基本';
 $_lang['tinymce7_toolbar_legacy'] = 'レガシー（既定）';
+$_lang['tinymce7_toolbar_full'] = 'フル';
 $_lang['tinymce7_menubar_label'] = 'メニューバーの表示';
 $_lang['tinymce7_menubar_description'] = 'TinyMCE 7 のメニューバーを表示するかどうかを設定します。';
 $_lang['tinymce7_menubar_default'] = 'TinyMCE の既定（表示）';
