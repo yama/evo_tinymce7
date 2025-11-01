@@ -53,6 +53,7 @@ if (!function_exists('tinymce7HandleInit')) {
         $config['convert_urls'] = $config['convert_urls'] ?? false;
         $config['relative_urls'] = $config['relative_urls'] ?? false;
 
+        $config = tinymce7ApplyToolbarPreset($config);
         $config = tinymce7ApplyEnterMode($config);
 
         [$config, $fileBrowser] = tinymce7ResolveFileBrowser($config, $params);
@@ -247,6 +248,31 @@ if (!function_exists('tinymce7ApplyEnterMode')) {
     }
 }
 
+if (!function_exists('tinymce7DetectToolbarPreset')) {
+    function tinymce7DetectToolbarPreset(): string
+    {
+        $keys = ['tinymce7_toolbar_preset', 'tinymce_toolbar_preset'];
+
+        foreach ($keys as $key) {
+            if (!isset(evo()->config[$key])) {
+                continue;
+            }
+
+            $value = strtolower(trim((string)evo()->config[$key]));
+
+            if ($value === 'basic') {
+                return 'basic';
+            }
+
+            if ($value === 'simple') {
+                return 'simple';
+            }
+        }
+
+        return 'simple';
+    }
+}
+
 if (!function_exists('tinymce7DetectEnterMode')) {
     function tinymce7DetectEnterMode(): ?string
     {
@@ -268,15 +294,44 @@ if (!function_exists('tinymce7DetectEnterMode')) {
     }
 }
 
+if (!function_exists('tinymce7ApplyToolbarPreset')) {
+    function tinymce7ApplyToolbarPreset(array $config): array
+    {
+        $preset = tinymce7DetectToolbarPreset();
+
+        switch ($preset) {
+            case 'basic':
+                $config['menubar'] = false;
+                $config['plugins'] = 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount';
+                $config['toolbar'] = 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat';
+                $config['toolbar_mode'] = 'sliding';
+                break;
+
+            case 'simple':
+            default:
+                // Preserve the configuration file defaults.
+                break;
+        }
+
+        return $config;
+    }
+}
+
 if (!function_exists('tinymce7RenderSystemSettingsTab')) {
     function tinymce7RenderSystemSettingsTab(): string
     {
+        $toolbarPreset = tinymce7DetectToolbarPreset();
         $current = tinymce7DetectEnterMode();
         if ($current !== 'p' && $current !== 'br') {
             $current = '';
         }
         $fieldId = 'tinymce7_entermode';
+        $toolbarFieldId = 'tinymce7_toolbar_preset';
 
+        $toolbarOptions = [
+            ['value' => 'simple', 'label' => 'シンプル（既定）'],
+            ['value' => 'basic', 'label' => 'Tiny Cloud 基本サンプル'],
+        ];
         $options = [
             ['value' => '', 'label' => 'TinyMCEの既定（段落）'],
             ['value' => 'p', 'label' => '段落 &lt;p&gt; を挿入'],
@@ -307,6 +362,22 @@ if (!function_exists('tinymce7RenderSystemSettingsTab')) {
         $html[] = '<table id="editorRow_TinyMCE7" class="settings editorRow">';
         $html[] = '  <tr class="row1">';
         $html[] = '    <th colspan="2" style="color:#707070; background-color:#eeeeee"><h4 style="margin:3px;">TinyMCE 7</h4></th>';
+        $html[] = '  </tr>';
+        $html[] = '  <tr class="row1">';
+        $html[] = '    <th><label for="' . $toolbarFieldId . '">ツールバー構成</label></th>';
+        $html[] = '    <td>';
+        $html[] = '      <select name="' . $toolbarFieldId . '" id="' . $toolbarFieldId . '" class="inputBox">';
+
+        foreach ($toolbarOptions as $option) {
+            $value = htmlspecialchars($option['value'], ENT_QUOTES, 'UTF-8');
+            $label = $option['label'];
+            $selected = ($toolbarPreset === $option['value']) ? ' selected="selected"' : '';
+            $html[] = '            <option value="' . $value . '"' . $selected . '>' . $label . '</option>';
+        }
+
+        $html[] = '      </select>';
+        $html[] = '      <div>TinyMCE 7 のツールバー構成を選択します。</div>';
+        $html[] = '    </td>';
         $html[] = '  </tr>';
         $html[] = '  <tr class="row1">';
         $html[] = '    <th><label for="' . $fieldId . '">改行キーの動作</label></th>';
