@@ -54,6 +54,7 @@ if (!function_exists('tinymce7HandleInit')) {
         $config['relative_urls'] = $config['relative_urls'] ?? false;
 
         $config = tinymce7ApplyToolbarPreset($config);
+        $config = tinymce7ApplyMenubarPreference($config);
         $config = tinymce7ApplyEnterMode($config);
 
         [$config, $fileBrowser] = tinymce7ResolveFileBrowser($config, $params);
@@ -273,6 +274,51 @@ if (!function_exists('tinymce7DetectToolbarPreset')) {
     }
 }
 
+if (!function_exists('tinymce7DetectMenubarPreference')) {
+    function tinymce7DetectMenubarPreference(): ?bool
+    {
+        $keys = ['tinymce7_menubar', 'tinymce_menubar'];
+
+        foreach ($keys as $key) {
+            if (!array_key_exists($key, evo()->config)) {
+                continue;
+            }
+
+            $raw = evo()->config[$key];
+
+            if (is_bool($raw)) {
+                return $raw;
+            }
+
+            if (is_int($raw)) {
+                return $raw !== 0;
+            }
+
+            if (is_string($raw)) {
+                $value = strtolower(trim($raw));
+
+                if ($value === '') {
+                    continue;
+                }
+
+                if (in_array($value, ['1', 'true', 'yes', 'on', 'show'], true)) {
+                    return true;
+                }
+
+                if (in_array($value, ['0', 'false', 'no', 'off', 'hide'], true)) {
+                    return false;
+                }
+            }
+
+            if (is_float($raw)) {
+                return (int)$raw !== 0;
+            }
+        }
+
+        return null;
+    }
+}
+
 if (!function_exists('tinymce7DetectEnterMode')) {
     function tinymce7DetectEnterMode(): ?string
     {
@@ -342,6 +388,25 @@ if (!function_exists('tinymce7ApplyToolbarPreset')) {
     }
 }
 
+if (!function_exists('tinymce7ApplyMenubarPreference')) {
+    function tinymce7ApplyMenubarPreference(array $config): array
+    {
+        if (array_key_exists('menubar', $config)) {
+            return $config;
+        }
+
+        $preference = tinymce7DetectMenubarPreference();
+
+        if ($preference === null) {
+            return $config;
+        }
+
+        $config['menubar'] = $preference;
+
+        return $config;
+    }
+}
+
 if (!function_exists('tinymce7RenderSystemSettingsTab')) {
     function tinymce7RenderSystemSettingsTab(): string
     {
@@ -350,8 +415,16 @@ if (!function_exists('tinymce7RenderSystemSettingsTab')) {
         if ($current !== 'p' && $current !== 'br') {
             $current = '';
         }
+        $menubarPreference = tinymce7DetectMenubarPreference();
+        $menubarValue = '';
+        if ($menubarPreference === true) {
+            $menubarValue = '1';
+        } elseif ($menubarPreference === false) {
+            $menubarValue = '0';
+        }
         $fieldId = 'tinymce7_entermode';
         $toolbarFieldId = 'tinymce7_toolbar_preset';
+        $menubarFieldId = 'tinymce7_menubar';
 
         $toolbarOptions = [
             ['value' => 'simple', 'label' => 'シンプル（既定）'],
@@ -361,6 +434,11 @@ if (!function_exists('tinymce7RenderSystemSettingsTab')) {
             ['value' => '', 'label' => 'TinyMCEの既定（段落）'],
             ['value' => 'p', 'label' => '段落 &lt;p&gt; を挿入'],
             ['value' => 'br', 'label' => '改行 &lt;br&gt; を挿入'],
+        ];
+        $menubarOptions = [
+            ['value' => '', 'label' => 'TinyMCEの既定（表示）'],
+            ['value' => '1', 'label' => '表示する'],
+            ['value' => '0', 'label' => '表示しない'],
         ];
 
         $html = [];
@@ -402,6 +480,22 @@ if (!function_exists('tinymce7RenderSystemSettingsTab')) {
 
         $html[] = '      </select>';
         $html[] = '      <div>TinyMCE 7 のツールバー構成を選択します。</div>';
+        $html[] = '    </td>';
+        $html[] = '  </tr>';
+        $html[] = '  <tr class="row1">';
+        $html[] = '    <th><label for="' . $menubarFieldId . '">メニューバーの表示</label></th>';
+        $html[] = '    <td>';
+        $html[] = '      <select name="' . $menubarFieldId . '" id="' . $menubarFieldId . '" class="inputBox">';
+
+        foreach ($menubarOptions as $option) {
+            $value = htmlspecialchars($option['value'], ENT_QUOTES, 'UTF-8');
+            $label = $option['label'];
+            $selected = ($menubarValue === $option['value']) ? ' selected="selected"' : '';
+            $html[] = '            <option value="' . $value . '"' . $selected . '>' . $label . '</option>';
+        }
+
+        $html[] = '      </select>';
+        $html[] = '      <div>TinyMCE 7 のメニューバーを表示するかどうかを設定します。</div>';
         $html[] = '    </td>';
         $html[] = '  </tr>';
         $html[] = '  <tr class="row1">';
