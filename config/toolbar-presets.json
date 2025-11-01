@@ -8,10 +8,10 @@
       "charmap",
       "code",
       "directionality",
-      "emoticons",
       "fullscreen",
       "help",
       "image",
+      "importcss",
       "insertdatetime",
       "link",
       "lists",
@@ -19,13 +19,14 @@
       "nonbreaking",
       "paste",
       "preview",
+      "save",
       "searchreplace",
       "table",
       "visualblocks",
       "visualchars",
       "wordcount"
     ],
-    "toolbar": "undo redo | cut copy paste pastetext | searchreplace | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | blockquote | removeformat\nstyleselect formatselect fontselect fontsizeselect\nforecolor backcolor | subscript superscript | charmap emoticons | hr | visualblocks visualchars | ltr rtl | nonbreaking\nlink unlink anchor | image media | insertdatetime | table | code preview fullscreen | help",
+    "toolbar": "undo redo | bold forecolor backcolor strikethrough formatselect fontsizeselect pastetext | code template | fullscreen help\nimage media link unlink anchor | alignleft aligncenter alignright | bullist numlist | blockquote outdent indent | table hr | visualblocks visualchars | removeformat",
     "toolbar_mode": "wrap"
   },
   "basic": {
