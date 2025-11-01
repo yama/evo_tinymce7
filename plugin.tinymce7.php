@@ -292,11 +292,11 @@ if (!function_exists('tinymce7RenderSystemSettingsTab')) {
         $html[] = '  <div class="sectionBody">';
         $html[] = '    <table border="0" cellpadding="0" cellspacing="0" class="settings">';
         $html[] = '      <tr>';
-        $html[] = '        <td class="labelCell" style="width:200px;">';
-        $html[] = '          <label for="' . $fieldId . '">改行キーの動作</label><br />';
+        $html[] = '        <td class="labelCell first" style="width:200px;" valign="top">';
+        $html[] = '          <span class="label">改行キーの動作</span><br />';
         $html[] = '          <span class="comment">TinyMCE 7 で Enter キーを押したときの挙動を選択します。</span>';
         $html[] = '        </td>';
-        $html[] = '        <td class="inputCell">';
+        $html[] = '        <td class="inputCell" valign="top">';
         $html[] = '          <select name="' . $fieldId . '" id="' . $fieldId . '" class="inputBox">';
 
         foreach ($options as $option) {
