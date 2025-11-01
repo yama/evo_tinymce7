@@ -114,6 +114,10 @@ switch ($eventName) {
     case 'OnRichTextEditorInit':
         tinymce7HandleInit();
         break;
+
+    case 'OnInterfaceSettingsRender':
+        $event->output(tinymce7RenderSystemSettingsTab());
+        break;
 }
 
 if (!function_exists('tinymce7LoadConfig')) {
@@ -261,6 +265,51 @@ if (!function_exists('tinymce7DetectEnterMode')) {
         }
 
         return null;
+    }
+}
+
+if (!function_exists('tinymce7RenderSystemSettingsTab')) {
+    function tinymce7RenderSystemSettingsTab(): string
+    {
+        $current = tinymce7DetectEnterMode();
+        if ($current !== 'p' && $current !== 'br') {
+            $current = '';
+        }
+        $tabId = 'tabTinyMCE7';
+
+        $options = [
+            ['value' => '', 'label' => 'TinyMCEの既定（段落）'],
+            ['value' => 'p', 'label' => '段落 &lt;p&gt; を挿入'],
+            ['value' => 'br', 'label' => '改行 &lt;br&gt; を挿入'],
+        ];
+
+        $html = [];
+        $html[] = '<div class="tab-page" id="' . $tabId . '">';
+        $html[] = '  <h2 class="tab">TinyMCE 7</h2>';
+        $html[] = '  <script type="text/javascript">if (typeof tpSettings !== "undefined") {tpSettings.addTabPage(document.getElementById("' . $tabId . '"));}</script>';
+        $html[] = '  <div class="container">';
+        $html[] = '    <table class="settings">';
+        $html[] = '      <tr>';
+        $html[] = '        <th class="labelCell" style="width:40%">改行キーの動作</th>';
+        $html[] = '        <td class="inputCell">';
+        $html[] = '          <select name="tinymce7_entermode" class="inputBox">';
+
+        foreach ($options as $option) {
+            $value = htmlspecialchars($option['value'], ENT_QUOTES, 'UTF-8');
+            $label = $option['label'];
+            $selected = ($current === $option['value']) ? ' selected="selected"' : '';
+            $html[] = '            <option value="' . $value . '"' . $selected . '>' . $label . '</option>';
+        }
+
+        $html[] = '          </select>';
+        $html[] = '          <p class="description">TinyMCE 7 で Enter キーを押したときの挙動を選択します。</p>';
+        $html[] = '        </td>';
+        $html[] = '      </tr>';
+        $html[] = '    </table>';
+        $html[] = '  </div>';
+        $html[] = '</div>';
+
+        return implode("\n", $html);
     }
 }
 

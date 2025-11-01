@@ -7,7 +7,7 @@
  * @category    plugin
  * @version     7.0.0
  * @license     http://www.gnu.org/copyleft/gpl.html GNU Public License (GPL)
- * @internal    @events OnRichTextEditorRegister,OnRichTextEditorInit
+ * @internal    @events OnRichTextEditorRegister,OnRichTextEditorInit,OnInterfaceSettingsRender
  * @internal    @modx_category Manager and Admin
  * @internal    @installset base
  */
