@@ -53,6 +53,8 @@ if (!function_exists('tinymce7HandleInit')) {
         $config['convert_urls'] = $config['convert_urls'] ?? false;
         $config['relative_urls'] = $config['relative_urls'] ?? false;
 
+        $config = tinymce7ApplyEnterMode($config);
+
         [$config, $fileBrowser] = tinymce7ResolveFileBrowser($config, $params);
 
         $configJson = tinymce7EncodeConfig($config);
@@ -211,6 +213,54 @@ if (!function_exists('tinymce7ResolveFileBrowser')) {
             default:
                 return [$config, 'none'];
         }
+    }
+}
+
+if (!function_exists('tinymce7ApplyEnterMode')) {
+    function tinymce7ApplyEnterMode(array $config): array
+    {
+        if (isset($config['force_br_newlines']) || isset($config['force_p_newlines']) || isset($config['forced_root_block'])) {
+            return $config;
+        }
+
+        $mode = tinymce7DetectEnterMode();
+
+        switch ($mode) {
+            case 'br':
+                $config['force_br_newlines'] = true;
+                $config['force_p_newlines'] = false;
+                $config['forced_root_block'] = '';
+                break;
+
+            case 'p':
+                $config['force_br_newlines'] = false;
+                $config['force_p_newlines'] = true;
+                $config['forced_root_block'] = 'p';
+                break;
+        }
+
+        return $config;
+    }
+}
+
+if (!function_exists('tinymce7DetectEnterMode')) {
+    function tinymce7DetectEnterMode(): ?string
+    {
+        $keys = ['tinymce7_entermode', 'tinymce4_entermode', 'tinymce_entermode'];
+
+        foreach ($keys as $key) {
+            if (!isset(evo()->config[$key])) {
+                continue;
+            }
+
+            $value = strtolower(trim((string)evo()->config[$key]));
+
+            if ($value === 'br' || $value === 'p') {
+                return $value;
+            }
+        }
+
+        return null;
     }
 }
 
