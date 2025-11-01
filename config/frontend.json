@@ -3,6 +3,7 @@
   "plugins": "lists link image code",
   "toolbar": "undo redo | bold italic underline | bullist numlist | link image | code",
   "branding": false,
+  "promotion": false,
   "relative_urls": false,
   "convert_urls": false
 }
