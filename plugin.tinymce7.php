@@ -295,7 +295,7 @@ if (!function_exists('tinymce7DetectToolbarPreset')) {
             }
         }
 
-        return 'simple';
+        return 'legacy';
     }
 }
 
@@ -541,9 +541,9 @@ if (!function_exists('tinymce7RenderSystemSettingsTab')) {
         $menubarFieldId = 'tinymce7_menubar';
 
         $toolbarOptions = [
-            ['value' => 'simple', 'label' => tinymce7Lang('tinymce7_toolbar_simple', 'Simple (Default)')],
-            ['value' => 'basic', 'label' => tinymce7Lang('tinymce7_toolbar_basic', 'Tiny Cloud Basic Sample')],
-            ['value' => 'legacy', 'label' => tinymce7Lang('tinymce7_toolbar_legacy', 'Legacy TinyMCE Style')],
+            ['value' => 'simple', 'label' => tinymce7Lang('tinymce7_toolbar_simple', 'Simple')],
+            ['value' => 'basic', 'label' => tinymce7Lang('tinymce7_toolbar_basic', 'Basic')],
+            ['value' => 'legacy', 'label' => tinymce7Lang('tinymce7_toolbar_legacy', 'Legacy (Default)')],
         ];
         $options = [
             ['value' => '', 'label' => tinymce7Lang('tinymce7_entermode_default', 'TinyMCE default (paragraph)')],

@@ -2,9 +2,9 @@
 $_lang['tinymce7_settings_header'] = 'TinyMCE 7';
 $_lang['tinymce7_toolbar_label'] = 'Toolbar layout';
 $_lang['tinymce7_toolbar_description'] = 'Choose the TinyMCE 7 toolbar configuration.';
-$_lang['tinymce7_toolbar_simple'] = 'Simple (default)';
-$_lang['tinymce7_toolbar_basic'] = 'Tiny Cloud basic sample';
-$_lang['tinymce7_toolbar_legacy'] = 'Legacy TinyMCE style';
+$_lang['tinymce7_toolbar_simple'] = 'Simple';
+$_lang['tinymce7_toolbar_basic'] = 'Basic';
+$_lang['tinymce7_toolbar_legacy'] = 'Legacy (default)';
 $_lang['tinymce7_menubar_label'] = 'Menubar visibility';
 $_lang['tinymce7_menubar_description'] = 'Choose whether TinyMCE 7 displays the menubar.';
 $_lang['tinymce7_menubar_default'] = 'TinyMCE default (show)';
