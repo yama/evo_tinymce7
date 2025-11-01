@@ -232,24 +232,26 @@ if (!function_exists('tinymce7ResolveFileBrowser')) {
 if (!function_exists('tinymce7ApplyEnterMode')) {
     function tinymce7ApplyEnterMode(array $config): array
     {
-        if (isset($config['force_br_newlines']) || isset($config['force_p_newlines']) || isset($config['forced_root_block'])) {
+        unset($config['force_br_newlines'], $config['force_p_newlines']);
+
+        if (array_key_exists('newline_behavior', $config)) {
             return $config;
         }
 
         $mode = tinymce7DetectEnterMode();
 
-        switch ($mode) {
-            case 'br':
-                $config['force_br_newlines'] = true;
-                $config['force_p_newlines'] = false;
-                $config['forced_root_block'] = '';
-                break;
+        if ($mode === null) {
+            return $config;
+        }
 
-            case 'p':
-                $config['force_br_newlines'] = false;
-                $config['force_p_newlines'] = true;
-                $config['forced_root_block'] = 'p';
-                break;
+        if (isset($config['forced_root_block']) && in_array($config['forced_root_block'], ['', 'p'], true)) {
+            unset($config['forced_root_block']);
+        }
+
+        if ($mode === 'br') {
+            $config['newline_behavior'] = 'linebreak';
+        } elseif ($mode === 'p') {
+            $config['newline_behavior'] = 'default';
         }
 
         return $config;
