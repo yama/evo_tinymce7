@@ -276,6 +276,7 @@ if (!function_exists('tinymce7RenderSystemSettingsTab')) {
             $current = '';
         }
         $tabId = 'tabTinyMCE7';
+        $fieldId = 'tinymce7_entermode';
 
         $options = [
             ['value' => '', 'label' => 'TinyMCEの既定（段落）'],
@@ -290,9 +291,9 @@ if (!function_exists('tinymce7RenderSystemSettingsTab')) {
         $html[] = '  <div class="container">';
         $html[] = '    <table class="settings">';
         $html[] = '      <tr>';
-        $html[] = '        <th class="labelCell" style="width:40%">改行キーの動作</th>';
+        $html[] = '        <th class="labelCell"><label for="' . $fieldId . '">改行キーの動作</label></th>';
         $html[] = '        <td class="inputCell">';
-        $html[] = '          <select name="tinymce7_entermode" class="inputBox">';
+        $html[] = '          <select name="' . $fieldId . '" id="' . $fieldId . '" class="inputBox">';
 
         foreach ($options as $option) {
             $value = htmlspecialchars($option['value'], ENT_QUOTES, 'UTF-8');
@@ -302,7 +303,7 @@ if (!function_exists('tinymce7RenderSystemSettingsTab')) {
         }
 
         $html[] = '          </select>';
-        $html[] = '          <p class="description">TinyMCE 7 で Enter キーを押したときの挙動を選択します。</p>';
+        $html[] = '          <span class="comment">TinyMCE 7 で Enter キーを押したときの挙動を選択します。</span>';
         $html[] = '        </td>';
         $html[] = '      </tr>';
         $html[] = '    </table>';
