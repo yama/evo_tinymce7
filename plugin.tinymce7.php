@@ -48,8 +48,15 @@ if (!function_exists('tinymce7HandleInit')) {
             $config['width'] = $params['width'];
         }
 
-        $config['language'] = $config['language'] ?? 'ja';
-        $config['language_url'] = $config['language_url'] ?? tinymce7LanguageUrl($config['language']);
+        $uiLanguage = tinymce7DetectUiLanguage();
+
+        if (empty($config['language'])) {
+            $config['language'] = $uiLanguage;
+        }
+
+        if (empty($config['language_url'])) {
+            $config['language_url'] = tinymce7LanguageUrl($config['language']);
+        }
         $config['convert_urls'] = $config['convert_urls'] ?? false;
         $config['relative_urls'] = $config['relative_urls'] ?? false;
 
@@ -520,16 +527,113 @@ if (!function_exists('tinymce7RenderSystemSettingsTab')) {
     }
 }
 
+if (!function_exists('tinymce7DetectUiLanguage')) {
+    function tinymce7DetectUiLanguage(): string
+    {
+        $default = 'en';
+        $managerLanguage = '';
+
+        $modx = evo();
+        if (is_object($modx) && isset($modx->config['manager_language'])) {
+            $managerLanguage = (string)$modx->config['manager_language'];
+        }
+
+        $normalized = strtolower(trim($managerLanguage));
+        if ($normalized === '') {
+            return $default;
+        }
+
+        $normalized = str_replace('_', '-', $normalized);
+        $normalized = preg_replace('/-(utf|utf8|utf-8)$/', '', $normalized);
+        $normalized = preg_replace('/-(1251|1252|latin1|latin2|iso8859-1|iso8859-2|iso8859-5)$/', '', $normalized);
+        $normalized = preg_replace('/[^a-z-]/', '', $normalized);
+
+        $languageMap = [
+            'arabic' => 'ar',
+            'bulgarian' => 'bg',
+            'catalan' => 'ca',
+            'chinese-simplified' => 'zh_CN',
+            'chinese-traditional' => 'zh_TW',
+            'croatian' => 'hr',
+            'czech' => 'cs',
+            'danish' => 'da',
+            'dutch' => 'nl',
+            'english' => 'en',
+            'english-british' => 'en_GB',
+            'estonian' => 'et',
+            'finnish' => 'fi',
+            'french' => 'fr',
+            'german' => 'de',
+            'greek' => 'el',
+            'hebrew' => 'he',
+            'hungarian' => 'hu',
+            'italian' => 'it',
+            'japanese' => 'ja',
+            'korean' => 'ko',
+            'latvian' => 'lv',
+            'lithuanian' => 'lt',
+            'norwegian' => 'nb_NO',
+            'persian' => 'fa',
+            'polish' => 'pl',
+            'portuguese' => 'pt_PT',
+            'portuguese-br' => 'pt_BR',
+            'romanian' => 'ro',
+            'russian' => 'ru',
+            'slovak' => 'sk',
+            'slovenian' => 'sl',
+            'spanish' => 'es',
+            'swedish' => 'sv_SE',
+            'thai' => 'th',
+            'turkish' => 'tr',
+            'ukrainian' => 'uk',
+            'vietnamese' => 'vi',
+        ];
+
+        if (isset($languageMap[$normalized])) {
+            return $languageMap[$normalized];
+        }
+
+        $base = strtok($normalized, '-');
+        if ($base !== false) {
+            if (isset($languageMap[$base])) {
+                return $languageMap[$base];
+            }
+
+            if (strlen($base) === 2) {
+                return $base;
+            }
+        }
+
+        if (strpos($normalized, 'english') === 0) {
+            return 'en';
+        }
+
+        return $default;
+    }
+}
+
 if (!function_exists('tinymce7LanguageUrl')) {
     function tinymce7LanguageUrl(string $language): string
     {
-        $language = strtolower(trim($language));
-        $localPath = MODX_BASE_PATH . 'assets/plugins/tinymce7/langs/' . $language . '.js';
-        if (is_file($localPath)) {
-            return MODX_BASE_URL . 'assets/plugins/tinymce7/langs/' . $language . '.js';
+        $language = trim($language);
+        if ($language === '') {
+            $language = 'en';
         }
 
-        return 'https://cdn.jsdelivr.net/npm/@tinymce/tinymce-i18n@latest/langs/' . $language . '.js';
+        $languageFile = $language . '.js';
+        $localPaths = [
+            'assets/plugins/tinymce7/tinymce/js/tinymce/langs/' . $languageFile,
+            'assets/plugins/tinymce7/langs/' . strtolower($language) . '.js',
+        ];
+
+        foreach ($localPaths as $relativePath) {
+            $fullPath = MODX_BASE_PATH . $relativePath;
+            if (is_file($fullPath)) {
+                return MODX_BASE_URL . $relativePath;
+            }
+        }
+
+        return 'https://cdn.jsdelivr.net/npm/@tinymce/tinymce-i18n@latest/langs/' . rawurlencode($language) . '.js';
     }
 }
 
