@@ -1,5 +1,33 @@
 {
   "simple": {},
+  "legacy": {
+    "plugins": [
+      "advlist",
+      "anchor",
+      "autolink",
+      "charmap",
+      "code",
+      "directionality",
+      "emoticons",
+      "fullscreen",
+      "help",
+      "image",
+      "insertdatetime",
+      "link",
+      "lists",
+      "media",
+      "nonbreaking",
+      "paste",
+      "preview",
+      "searchreplace",
+      "table",
+      "visualblocks",
+      "visualchars",
+      "wordcount"
+    ],
+    "toolbar": "undo redo | cut copy paste pastetext | searchreplace | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | blockquote | removeformat\nstyleselect formatselect fontselect fontsizeselect\nforecolor backcolor | subscript superscript | charmap emoticons | hr | visualblocks visualchars | ltr rtl | nonbreaking\nlink unlink anchor | image media | insertdatetime | table | code preview fullscreen | help",
+    "toolbar_mode": "wrap"
+  },
   "basic": {
     "plugins": [
       "advlist",

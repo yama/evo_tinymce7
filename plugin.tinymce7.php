@@ -261,6 +261,15 @@ if (!function_exists('tinymce7DetectToolbarPreset')) {
     {
         $keys = ['tinymce7_toolbar_preset', 'tinymce_toolbar_preset'];
 
+        $aliases = [
+            'simple' => 'simple',
+            'basic' => 'basic',
+            'legacy' => 'legacy',
+            'classic' => 'legacy',
+            'full' => 'legacy',
+            'advanced' => 'legacy',
+        ];
+
         foreach ($keys as $key) {
             if (!isset(evo()->config[$key])) {
                 continue;
@@ -268,12 +277,12 @@ if (!function_exists('tinymce7DetectToolbarPreset')) {
 
             $value = strtolower(trim((string)evo()->config[$key]));
 
-            if ($value === 'basic') {
-                return 'basic';
+            if ($value === '') {
+                continue;
             }
 
-            if ($value === 'simple') {
-                return 'simple';
+            if (isset($aliases[$value])) {
+                return $aliases[$value];
             }
         }
 
@@ -436,6 +445,7 @@ if (!function_exists('tinymce7RenderSystemSettingsTab')) {
         $toolbarOptions = [
             ['value' => 'simple', 'label' => 'シンプル（既定）'],
             ['value' => 'basic', 'label' => 'Tiny Cloud 基本サンプル'],
+            ['value' => 'legacy', 'label' => '旧TinyMCEプラグイン風'],
         ];
         $options = [
             ['value' => '', 'label' => 'TinyMCEの既定（段落）'],
