@@ -301,10 +301,32 @@ if (!function_exists('tinymce7ApplyToolbarPreset')) {
 
         switch ($preset) {
             case 'basic':
-                $config['menubar'] = false;
-                $config['plugins'] = 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount';
-                $config['toolbar'] = 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat';
-                $config['toolbar_mode'] = 'sliding';
+                $config['plugins'] = [
+                    'advlist',
+                    'autolink',
+                    'lists',
+                    'link',
+                    'image',
+                    'charmap',
+                    'preview',
+                    'anchor',
+                    'searchreplace',
+                    'visualblocks',
+                    'code',
+                    'fullscreen',
+                    'insertdatetime',
+                    'media',
+                    'table',
+                    'help',
+                    'wordcount',
+                ];
+                $config['toolbar'] = 'undo redo | blocks | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help';
+                if (!isset($config['height'])) {
+                    $config['height'] = 500;
+                }
+                if (!isset($config['content_style'])) {
+                    $config['content_style'] = 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }';
+                }
                 break;
 
             case 'simple':
