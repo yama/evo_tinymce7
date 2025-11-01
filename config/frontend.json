@@ -1,6 +1,5 @@
 {
   "height": 360,
-  "menubar": false,
   "plugins": "lists link image code",
   "toolbar": "undo redo | bold italic underline | bullist numlist | link image | code",
   "branding": false,
