@@ -275,7 +275,6 @@ if (!function_exists('tinymce7RenderSystemSettingsTab')) {
         if ($current !== 'p' && $current !== 'br') {
             $current = '';
         }
-        $tabId = 'tabTinyMCE7';
         $fieldId = 'tinymce7_entermode';
 
         $options = [
@@ -285,39 +284,34 @@ if (!function_exists('tinymce7RenderSystemSettingsTab')) {
         ];
 
         $html = [];
-        $html[] = '<div class="tab-page" id="' . $tabId . '">';
-        $html[] = '  <h2 class="tab">TinyMCE 7</h2>';
-        $html[] = '  <script type="text/javascript">if (typeof tpSettings !== "undefined") {tpSettings.addTabPage(document.getElementById("' . $tabId . '"));}</script>';
-        $html[] = '  <div class="sectionHeader">TinyMCE 7</div>';
-        $html[] = '  <div class="sectionBody">';
-        $html[] = '    <style type="text/css">';
-        $html[] = '        textarea.mce {';
-        $html[] = '            width: 95%;';
-        $html[] = '            height: 53px;';
-        $html[] = '            display: block;';
-        $html[] = '        }';
+        $html[] = '<style type="text/css">';
+        $html[] = '    textarea.mce {';
+        $html[] = '        width: 95%;';
+        $html[] = '        height: 53px;';
+        $html[] = '        display: block;';
+        $html[] = '    }';
         $html[] = '';
-        $html[] = '        #editorRow_TinyMCE {';
-        $html[] = '            width: 99%;';
-        $html[] = '        }';
+        $html[] = '    #editorRow_TinyMCE7 {';
+        $html[] = '        width: 99%;';
+        $html[] = '    }';
         $html[] = '';
-        $html[] = '        #editorRow_TinyMCE th {';
-        $html[] = '            width: 220px;';
-        $html[] = '            margin-left: 25px;';
-        $html[] = '        }';
+        $html[] = '    #editorRow_TinyMCE7 th {';
+        $html[] = '        width: 220px;';
+        $html[] = '        margin-left: 25px;';
+        $html[] = '    }';
         $html[] = '';
-        $html[] = '        #editorRow_TinyMCE td, #editorRow_TinyMCE th {';
-        $html[] = '            border-bottom: 1px dotted #ccc;';
-        $html[] = '        }';
-        $html[] = '    </style>';
-        $html[] = '    <table id="editorRow_TinyMCE" class="settings editorRow">';
-        $html[] = '      <tr class="row1">';
-        $html[] = '        <th colspan="2" style="color:#707070; background-color:#eeeeee"><h4 style="margin:3px;">TinyMCE 7</h4></th>';
-        $html[] = '      </tr>';
-        $html[] = '      <tr class="row1">';
-        $html[] = '        <th><label for="' . $fieldId . '">改行キーの動作</label></th>';
-        $html[] = '        <td>';
-        $html[] = '          <select name="' . $fieldId . '" id="' . $fieldId . '" class="inputBox">';
+        $html[] = '    #editorRow_TinyMCE7 td, #editorRow_TinyMCE7 th {';
+        $html[] = '        border-bottom: 1px dotted #ccc;';
+        $html[] = '    }';
+        $html[] = '</style>';
+        $html[] = '<table id="editorRow_TinyMCE7" class="settings editorRow">';
+        $html[] = '  <tr class="row1">';
+        $html[] = '    <th colspan="2" style="color:#707070; background-color:#eeeeee"><h4 style="margin:3px;">TinyMCE 7</h4></th>';
+        $html[] = '  </tr>';
+        $html[] = '  <tr class="row1">';
+        $html[] = '    <th><label for="' . $fieldId . '">改行キーの動作</label></th>';
+        $html[] = '    <td>';
+        $html[] = '      <select name="' . $fieldId . '" id="' . $fieldId . '" class="inputBox">';
 
         foreach ($options as $option) {
             $value = htmlspecialchars($option['value'], ENT_QUOTES, 'UTF-8');
@@ -326,13 +320,11 @@ if (!function_exists('tinymce7RenderSystemSettingsTab')) {
             $html[] = '            <option value="' . $value . '"' . $selected . '>' . $label . '</option>';
         }
 
-        $html[] = '          </select>';
-        $html[] = '          <div>TinyMCE 7 で Enter キーを押したときの挙動を選択します。</div>';
-        $html[] = '        </td>';
-        $html[] = '      </tr>';
-        $html[] = '    </table>';
-        $html[] = '  </div>';
-        $html[] = '</div>';
+        $html[] = '      </select>';
+        $html[] = '      <div>TinyMCE 7 で Enter キーを押したときの挙動を選択します。</div>';
+        $html[] = '    </td>';
+        $html[] = '  </tr>';
+        $html[] = '</table>';
 
         return implode("\n", $html);
     }
