@@ -121,7 +121,7 @@ final class Language
         }
 
         $this->lexicon = [];
-        $languageKeys = [];
+        $languageKeys = ['english'];
 
         $managerLanguage = '';
         $modx = evo();
@@ -130,10 +130,19 @@ final class Language
         }
 
         if ($managerLanguage !== '') {
-            $languageKeys[] = $managerLanguage;
+            $normalized = strtolower(trim($managerLanguage));
+
+            if ($normalized !== 'english') {
+                $base = strtok($normalized, '-');
+                if ($base !== false && $base !== '' && $base !== 'english') {
+                    $languageKeys[] = $base;
+                }
+
+                $languageKeys[] = $normalized;
+            }
         }
 
-        $languageKeys[] = 'english';
+        $languageKeys = array_values(array_unique($languageKeys));
 
         foreach ($languageKeys as $langKey) {
             $this->lexicon = array_merge($this->lexicon, $this->loadLexiconFor($langKey));
