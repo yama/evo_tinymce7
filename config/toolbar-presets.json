@@ -26,7 +26,10 @@
       "visualchars",
       "wordcount"
     ],
-    "toolbar": "undo redo | bold forecolor backcolor strikethrough formatselect fontsizeselect pastetext | code template | fullscreen help\nimage media link unlink anchor | alignleft aligncenter alignright | bullist numlist | blockquote outdent indent | table hr | visualblocks visualchars | removeformat",
+    "toolbar": [
+      "undo redo bold forecolor backcolor strikethrough formatselect fontsizeselect pastetext code template fullscreen help",
+      "image media link unlink anchor alignleft aligncenter alignright bullist numlist blockquote outdent indent table hr visualblocks visualchars removeformat"
+    ],
     "toolbar_mode": "wrap"
   },
   "basic": {
@@ -49,7 +52,7 @@
       "help",
       "wordcount"
     ],
-    "toolbar": "undo redo | blocks | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help",
+    "toolbar": "undo redo blocks bold italic backcolor alignleft aligncenter alignright alignjustify bullist numlist outdent indent removeformat help",
     "height": 500,
     "content_style": "body { font-family:Helvetica,Arial,sans-serif; font-size:16px }"
   }
