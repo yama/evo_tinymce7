@@ -294,45 +294,48 @@ if (!function_exists('tinymce7DetectEnterMode')) {
     }
 }
 
+if (!function_exists('tinymce7LoadToolbarPresets')) {
+    function tinymce7LoadToolbarPresets(): array
+    {
+        static $presets;
+
+        if ($presets !== null) {
+            return $presets;
+        }
+
+        $path = MODX_BASE_PATH . 'assets/plugins/tinymce7/config/toolbar-presets.json';
+        if (!is_file($path)) {
+            $presets = [];
+
+            return $presets;
+        }
+
+        $json = file_get_contents($path);
+        if ($json === false) {
+            $presets = [];
+
+            return $presets;
+        }
+
+        $data = json_decode($json, true);
+        $presets = is_array($data) ? $data : [];
+
+        return $presets;
+    }
+}
+
 if (!function_exists('tinymce7ApplyToolbarPreset')) {
     function tinymce7ApplyToolbarPreset(array $config): array
     {
         $preset = tinymce7DetectToolbarPreset();
+        $presets = tinymce7LoadToolbarPresets();
 
-        switch ($preset) {
-            case 'basic':
-                $config['plugins'] = [
-                    'advlist',
-                    'autolink',
-                    'lists',
-                    'link',
-                    'image',
-                    'charmap',
-                    'preview',
-                    'anchor',
-                    'searchreplace',
-                    'visualblocks',
-                    'code',
-                    'fullscreen',
-                    'insertdatetime',
-                    'media',
-                    'table',
-                    'help',
-                    'wordcount',
-                ];
-                $config['toolbar'] = 'undo redo | blocks | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help';
-                if (!isset($config['height'])) {
-                    $config['height'] = 500;
-                }
-                if (!isset($config['content_style'])) {
-                    $config['content_style'] = 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }';
-                }
-                break;
+        if (!isset($presets[$preset]) || !is_array($presets[$preset])) {
+            return $config;
+        }
 
-            case 'simple':
-            default:
-                // Preserve the configuration file defaults.
-                break;
+        foreach ($presets[$preset] as $key => $value) {
+            $config[$key] = $value;
         }
 
         return $config;
