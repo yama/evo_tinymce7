@@ -85,9 +85,7 @@ final class EditorInitializer
             $this->scriptFactory->scriptTag($this->scriptFactory->tinymceScriptUrl()),
         ];
 
-        if ($fileBrowser === 'elfinder') {
-            $scripts[] = $this->scriptFactory->scriptTag(MODX_BASE_URL . 'assets/plugins/tinymce7/js/elfinder-picker.js');
-        } elseif ($fileBrowser === 'mcpuk') {
+        if ($fileBrowser === 'mcpuk') {
             $scripts[] = $this->scriptFactory->inlineScript($this->fileBrowserResolver->mcpukBootstrapScript());
             $scripts[] = $this->scriptFactory->scriptTag(MODX_BASE_URL . 'assets/plugins/tinymce7/js/mcpuk-picker.js');
         }
@@ -106,9 +104,6 @@ final class EditorInitializer
         $output[] = '        return;';
         $output[] = '    }';
         $output[] = '    switch (' . json_encode($fileBrowser) . ') {';
-        $output[] = '        case "elfinder":';
-        $output[] = '            config.file_picker_callback = window.mceElfinderPicker || undefined;';
-        $output[] = '            break;';
         $output[] = '        case "mcpuk":';
         $output[] = '            config.file_picker_callback = window.mceModxFilePicker || undefined;';
         $output[] = '            break;';
