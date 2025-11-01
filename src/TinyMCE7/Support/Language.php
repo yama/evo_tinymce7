@@ -129,17 +129,17 @@ final class Language
             $managerLanguage = (string)$modx->config['manager_language'];
         }
 
-        if ($managerLanguage !== '') {
-            $normalized = strtolower(trim($managerLanguage));
-
-            if ($normalized !== 'english') {
-                $base = strtok($normalized, '-');
-                if ($base !== false && $base !== '' && $base !== 'english') {
+        $managerLanguage = trim($managerLanguage);
+        if ($managerLanguage !== '' && strcasecmp($managerLanguage, 'english') !== 0) {
+            $dashPosition = strpos($managerLanguage, '-');
+            if ($dashPosition !== false) {
+                $base = substr($managerLanguage, 0, $dashPosition);
+                if ($base !== '' && strcasecmp($base, 'english') !== 0) {
                     $languageKeys[] = $base;
                 }
-
-                $languageKeys[] = $normalized;
             }
+
+            $languageKeys[] = $managerLanguage;
         }
 
         $languageKeys = array_values(array_unique($languageKeys));
@@ -173,15 +173,7 @@ final class Language
             return $lexicon;
         }
 
-        $language = strtolower($language);
-        $languageVariants = [$language];
-
-        $underscoreVariant = str_replace('-', '_', $language);
-        if ($underscoreVariant !== $language) {
-            $languageVariants[] = $underscoreVariant;
-        }
-
-        $languageVariants = array_values(array_unique($languageVariants));
+        $languageVariants = $this->languageVariants($language);
 
         $paths = [];
         foreach ($languageVariants as $variant) {
@@ -196,16 +188,50 @@ final class Language
                 continue;
             }
 
-            /** @var array $languageStrings */
-            $languageStrings = [];
             $_lang = [];
             include $path;
 
             if (isset($_lang) && is_array($_lang)) {
                 $lexicon = array_merge($lexicon, $_lang);
             }
+            unset($_lang);
         }
 
         return $lexicon;
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function languageVariants(string $language): array
+    {
+        $variants = [];
+
+        $addVariant = static function (string $candidate) use (&$variants): void {
+            if ($candidate === '') {
+                return;
+            }
+
+            if (!in_array($candidate, $variants, true)) {
+                $variants[] = $candidate;
+            }
+        };
+
+        $addVariant($language);
+
+        if (strpos($language, '-') !== false) {
+            $addVariant(str_replace('-', '_', $language));
+        }
+
+        $lowercase = strtolower($language);
+        if ($lowercase !== $language) {
+            $addVariant($lowercase);
+
+            if (strpos($lowercase, '-') !== false) {
+                $addVariant(str_replace('-', '_', $lowercase));
+            }
+        }
+
+        return $variants;
     }
 }
