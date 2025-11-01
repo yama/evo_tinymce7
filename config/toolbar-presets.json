@@ -27,8 +27,8 @@
       "wordcount"
     ],
     "toolbar": [
-      "undo redo bold forecolor backcolor strikethrough formatselect fontsizeselect pastetext code template fullscreen help",
-      "image media link unlink anchor alignleft aligncenter alignright bullist numlist blockquote outdent indent table hr visualblocks visualchars removeformat"
+      "undo redo bold forecolor backcolor strikethrough formatselect fontsizeselect pastetext code template fullscreen help alignleft aligncenter alignright",
+      "image media link unlink anchor bullist numlist blockquote outdent indent table hr visualblocks visualchars removeformat"
     ],
     "toolbar_mode": "wrap"
   },
