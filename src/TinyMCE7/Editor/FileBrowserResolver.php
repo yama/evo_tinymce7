@@ -24,8 +24,6 @@ final class FileBrowserResolver
         }
 
         switch ($browser) {
-            case 'elfinder':
-                return [$config, 'elfinder'];
             case 'mcpuk':
             case null:
                 return [$config, 'mcpuk'];
