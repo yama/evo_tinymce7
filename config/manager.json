@@ -4,6 +4,7 @@
   "toolbar": "undo redo | styles | bold italic underline | bullist numlist | link image | code fullscreen",
   "content_css": false,
   "branding": false,
+  "promotion": false,
   "relative_urls": false,
   "convert_urls": false
 }
