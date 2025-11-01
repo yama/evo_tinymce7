@@ -288,10 +288,14 @@ if (!function_exists('tinymce7RenderSystemSettingsTab')) {
         $html[] = '<div class="tab-page" id="' . $tabId . '">';
         $html[] = '  <h2 class="tab">TinyMCE 7</h2>';
         $html[] = '  <script type="text/javascript">if (typeof tpSettings !== "undefined") {tpSettings.addTabPage(document.getElementById("' . $tabId . '"));}</script>';
-        $html[] = '  <div class="container">';
-        $html[] = '    <table class="settings">';
+        $html[] = '  <div class="sectionHeader">TinyMCE 7</div>';
+        $html[] = '  <div class="sectionBody">';
+        $html[] = '    <table border="0" cellpadding="0" cellspacing="0" class="settings">';
         $html[] = '      <tr>';
-        $html[] = '        <th class="labelCell"><label for="' . $fieldId . '">改行キーの動作</label></th>';
+        $html[] = '        <td class="labelCell" style="width:200px;">';
+        $html[] = '          <label for="' . $fieldId . '">改行キーの動作</label><br />';
+        $html[] = '          <span class="comment">TinyMCE 7 で Enter キーを押したときの挙動を選択します。</span>';
+        $html[] = '        </td>';
         $html[] = '        <td class="inputCell">';
         $html[] = '          <select name="' . $fieldId . '" id="' . $fieldId . '" class="inputBox">';
 
@@ -303,7 +307,6 @@ if (!function_exists('tinymce7RenderSystemSettingsTab')) {
         }
 
         $html[] = '          </select>';
-        $html[] = '          <span class="comment">TinyMCE 7 で Enter キーを押したときの挙動を選択します。</span>';
         $html[] = '        </td>';
         $html[] = '      </tr>';
         $html[] = '    </table>';
