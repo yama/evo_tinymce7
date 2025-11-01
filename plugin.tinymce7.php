@@ -232,25 +232,32 @@ if (!function_exists('tinymce7ResolveFileBrowser')) {
 if (!function_exists('tinymce7ApplyEnterMode')) {
     function tinymce7ApplyEnterMode(array $config): array
     {
-        unset($config['force_br_newlines'], $config['force_p_newlines']);
-
         if (array_key_exists('newline_behavior', $config)) {
+            return $config;
+        }
+
+        $hasLegacyNewlineFlags = false;
+
+        if (isset($config['force_br_newlines']) || isset($config['force_p_newlines'])) {
+            unset($config['force_br_newlines'], $config['force_p_newlines']);
+            $hasLegacyNewlineFlags = true;
+        }
+
+        if (isset($config['forced_root_block']) && !in_array($config['forced_root_block'], ['', 'p'], true)) {
             return $config;
         }
 
         $mode = tinymce7DetectEnterMode();
 
-        if ($mode === null) {
+        if ($mode === null && !$hasLegacyNewlineFlags) {
             return $config;
         }
 
-        if (isset($config['forced_root_block']) && in_array($config['forced_root_block'], ['', 'p'], true)) {
-            unset($config['forced_root_block']);
-        }
+        unset($config['forced_root_block']);
 
-        if ($mode === 'br') {
+        if ($mode === 'br' || ($mode === null && $hasLegacyNewlineFlags)) {
             $config['newline_behavior'] = 'linebreak';
-        } elseif ($mode === 'p') {
+        } elseif ($mode === 'p' || $mode === null) {
             $config['newline_behavior'] = 'default';
         }
 
