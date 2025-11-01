@@ -425,6 +425,95 @@ if (!function_exists('tinymce7ApplyMenubarPreference')) {
     }
 }
 
+if (!function_exists('tinymce7LoadLexiconFor')) {
+    function tinymce7LoadLexiconFor(string $language): array
+    {
+        $language = trim($language);
+        if ($language === '') {
+            return [];
+        }
+
+        $paths = [
+            MODX_BASE_PATH . "manager/includes/lang/{$language}/tinymce7.inc.php",
+            MODX_BASE_PATH . "manager/includes/lang/{$language}/tinymce7.php",
+            MODX_BASE_PATH . "assets/plugins/tinymce7/langs/mgr/{$language}.inc.php",
+            MODX_BASE_PATH . "assets/plugins/tinymce7/langs/mgr/{$language}.php",
+        ];
+
+        $lexicon = [];
+
+        foreach ($paths as $file) {
+            if (!is_file($file)) {
+                continue;
+            }
+
+            $_lang = [];
+            include $file;
+            if (!empty($_lang) && is_array($_lang)) {
+                $lexicon = array_merge($lexicon, $_lang);
+            }
+            unset($_lang);
+        }
+
+        return $lexicon;
+    }
+}
+
+if (!function_exists('tinymce7Lexicon')) {
+    function tinymce7Lexicon(): array
+    {
+        static $cachedLexicon;
+
+        if (is_array($cachedLexicon)) {
+            return $cachedLexicon;
+        }
+
+        $language = 'english';
+        $modx = evo();
+        if (is_object($modx) && isset($modx->config['manager_language'])) {
+            $candidate = trim((string)$modx->config['manager_language']);
+            if ($candidate !== '') {
+                $language = $candidate;
+            }
+        }
+
+        $languages = ['english'];
+        if (strcasecmp($language, 'english') !== 0) {
+            if (false !== $pos = strpos($language, '-')) {
+                $base = substr($language, 0, $pos);
+                if ($base !== '' && strcasecmp($base, 'english') !== 0) {
+                    $languages[] = $base;
+                }
+            }
+
+            $languages[] = $language;
+        }
+
+        $lexicon = [];
+
+        foreach ($languages as $langKey) {
+            $lexicon = array_merge($lexicon, tinymce7LoadLexiconFor($langKey));
+        }
+
+        $cachedLexicon = $lexicon;
+
+        return $cachedLexicon;
+    }
+}
+
+if (!function_exists('tinymce7Lang')) {
+    function tinymce7Lang(string $key, string $default): string
+    {
+        $lexicon = tinymce7Lexicon();
+
+        if (isset($lexicon[$key]) && is_string($lexicon[$key]) && $lexicon[$key] !== '') {
+            return $lexicon[$key];
+        }
+
+        return $default;
+    }
+}
+
 if (!function_exists('tinymce7RenderSystemSettingsTab')) {
     function tinymce7RenderSystemSettingsTab(): string
     {
@@ -445,92 +534,74 @@ if (!function_exists('tinymce7RenderSystemSettingsTab')) {
         $menubarFieldId = 'tinymce7_menubar';
 
         $toolbarOptions = [
-            ['value' => 'simple', 'label' => 'シンプル（既定）'],
-            ['value' => 'basic', 'label' => 'Tiny Cloud 基本サンプル'],
-            ['value' => 'legacy', 'label' => '旧TinyMCEプラグイン風'],
+            ['value' => 'simple', 'label' => tinymce7Lang('tinymce7_toolbar_simple', 'Simple (Default)')],
+            ['value' => 'basic', 'label' => tinymce7Lang('tinymce7_toolbar_basic', 'Tiny Cloud Basic Sample')],
+            ['value' => 'legacy', 'label' => tinymce7Lang('tinymce7_toolbar_legacy', 'Legacy TinyMCE Style')],
         ];
         $options = [
-            ['value' => '', 'label' => 'TinyMCEの既定（段落）'],
-            ['value' => 'p', 'label' => '段落 &lt;p&gt; を挿入'],
-            ['value' => 'br', 'label' => '改行 &lt;br&gt; を挿入'],
+            ['value' => '', 'label' => tinymce7Lang('tinymce7_entermode_default', 'TinyMCE default (paragraph)')],
+            ['value' => 'p', 'label' => tinymce7Lang('tinymce7_entermode_p', 'Insert paragraph <p>')],
+            ['value' => 'br', 'label' => tinymce7Lang('tinymce7_entermode_br', 'Insert line break <br>')],
         ];
         $menubarOptions = [
-            ['value' => '', 'label' => 'TinyMCEの既定（表示）'],
-            ['value' => '1', 'label' => '表示する'],
-            ['value' => '0', 'label' => '表示しない'],
+            ['value' => '', 'label' => tinymce7Lang('tinymce7_menubar_default', 'TinyMCE default (show)')],
+            ['value' => '1', 'label' => tinymce7Lang('tinymce7_menubar_show', 'Show')],
+            ['value' => '0', 'label' => tinymce7Lang('tinymce7_menubar_hide', 'Hide')],
         ];
 
         $html = [];
-        $html[] = '<style type="text/css">';
-        $html[] = '    textarea.mce {';
-        $html[] = '        width: 95%;';
-        $html[] = '        height: 53px;';
-        $html[] = '        display: block;';
-        $html[] = '    }';
-        $html[] = '';
-        $html[] = '    #editorRow_TinyMCE7 {';
-        $html[] = '        width: 99%;';
-        $html[] = '    }';
-        $html[] = '';
-        $html[] = '    #editorRow_TinyMCE7 th {';
-        $html[] = '        width: 220px;';
-        $html[] = '        margin-left: 25px;';
-        $html[] = '    }';
-        $html[] = '';
-        $html[] = '    #editorRow_TinyMCE7 td, #editorRow_TinyMCE7 th {';
-        $html[] = '        border-bottom: 1px dotted #ccc;';
-        $html[] = '    }';
-        $html[] = '</style>';
+        $cssUrl = MODX_BASE_URL . 'assets/plugins/tinymce7/tinymce7.settings.css';
+        $html[] = '<link rel="stylesheet" type="text/css" href="' . htmlspecialchars($cssUrl, ENT_QUOTES, 'UTF-8') . '">';
         $html[] = '<table id="editorRow_TinyMCE7" class="settings editorRow">';
         $html[] = '  <tr class="row1">';
-        $html[] = '    <th colspan="2" style="color:#707070; background-color:#eeeeee"><h4 style="margin:3px;">TinyMCE 7</h4></th>';
+        $html[] = '    <th colspan="2" class="tinymce7-settings__header"><h4 class="tinymce7-settings__title">' . htmlspecialchars(tinymce7Lang('tinymce7_settings_header', 'TinyMCE 7'), ENT_QUOTES, 'UTF-8') . '</h4></th>';
         $html[] = '  </tr>';
         $html[] = '  <tr class="row1">';
-        $html[] = '    <th><label for="' . $toolbarFieldId . '">ツールバー構成</label></th>';
+        $html[] = '    <th><label for="' . $toolbarFieldId . '">' . htmlspecialchars(tinymce7Lang('tinymce7_toolbar_label', 'Toolbar layout'), ENT_QUOTES, 'UTF-8') . '</label></th>';
         $html[] = '    <td>';
         $html[] = '      <select name="' . $toolbarFieldId . '" id="' . $toolbarFieldId . '" class="inputBox">';
 
         foreach ($toolbarOptions as $option) {
             $value = htmlspecialchars($option['value'], ENT_QUOTES, 'UTF-8');
-            $label = $option['label'];
+            $label = htmlspecialchars($option['label'], ENT_QUOTES, 'UTF-8');
             $selected = ($toolbarPreset === $option['value']) ? ' selected="selected"' : '';
             $html[] = '            <option value="' . $value . '"' . $selected . '>' . $label . '</option>';
         }
 
         $html[] = '      </select>';
-        $html[] = '      <div>TinyMCE 7 のツールバー構成を選択します。</div>';
+        $html[] = '      <div>' . htmlspecialchars(tinymce7Lang('tinymce7_toolbar_description', 'Choose the TinyMCE 7 toolbar configuration.'), ENT_QUOTES, 'UTF-8') . '</div>';
         $html[] = '    </td>';
         $html[] = '  </tr>';
         $html[] = '  <tr class="row1">';
-        $html[] = '    <th><label for="' . $menubarFieldId . '">メニューバーの表示</label></th>';
+        $html[] = '    <th><label for="' . $menubarFieldId . '">' . htmlspecialchars(tinymce7Lang('tinymce7_menubar_label', 'Menubar visibility'), ENT_QUOTES, 'UTF-8') . '</label></th>';
         $html[] = '    <td>';
         $html[] = '      <select name="' . $menubarFieldId . '" id="' . $menubarFieldId . '" class="inputBox">';
 
         foreach ($menubarOptions as $option) {
             $value = htmlspecialchars($option['value'], ENT_QUOTES, 'UTF-8');
-            $label = $option['label'];
+            $label = htmlspecialchars($option['label'], ENT_QUOTES, 'UTF-8');
             $selected = ($menubarValue === $option['value']) ? ' selected="selected"' : '';
             $html[] = '            <option value="' . $value . '"' . $selected . '>' . $label . '</option>';
         }
 
         $html[] = '      </select>';
-        $html[] = '      <div>TinyMCE 7 のメニューバーを表示するかどうかを設定します。</div>';
+        $html[] = '      <div>' . htmlspecialchars(tinymce7Lang('tinymce7_menubar_description', 'Choose whether TinyMCE 7 displays the menubar.'), ENT_QUOTES, 'UTF-8') . '</div>';
         $html[] = '    </td>';
         $html[] = '  </tr>';
         $html[] = '  <tr class="row1">';
-        $html[] = '    <th><label for="' . $fieldId . '">改行キーの動作</label></th>';
+        $html[] = '    <th><label for="' . $fieldId . '">' . htmlspecialchars(tinymce7Lang('tinymce7_entermode_label', 'Enter key behavior'), ENT_QUOTES, 'UTF-8') . '</label></th>';
         $html[] = '    <td>';
         $html[] = '      <select name="' . $fieldId . '" id="' . $fieldId . '" class="inputBox">';
 
         foreach ($options as $option) {
             $value = htmlspecialchars($option['value'], ENT_QUOTES, 'UTF-8');
-            $label = $option['label'];
+            $label = htmlspecialchars($option['label'], ENT_QUOTES, 'UTF-8');
             $selected = ($current === $option['value']) ? ' selected="selected"' : '';
             $html[] = '            <option value="' . $value . '"' . $selected . '>' . $label . '</option>';
         }
 
         $html[] = '      </select>';
-        $html[] = '      <div>TinyMCE 7 で Enter キーを押したときの挙動を選択します。</div>';
+        $html[] = '      <div>' . htmlspecialchars(tinymce7Lang('tinymce7_entermode_description', 'Choose how TinyMCE 7 handles the Enter key.'), ENT_QUOTES, 'UTF-8') . '</div>';
         $html[] = '    </td>';
         $html[] = '  </tr>';
         $html[] = '</table>';
