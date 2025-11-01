@@ -165,14 +165,22 @@ final class Language
         }
 
         $language = strtolower($language);
-        $language = str_replace('-', '_', $language);
+        $languageVariants = [$language];
 
-        $paths = [
-            MODX_BASE_PATH . "manager/includes/lang/{$language}/tinymce7.inc.php",
-            MODX_BASE_PATH . "manager/includes/lang/{$language}/tinymce7.php",
-            MODX_BASE_PATH . "assets/plugins/tinymce7/langs/mgr/{$language}.inc.php",
-            MODX_BASE_PATH . "assets/plugins/tinymce7/langs/mgr/{$language}.php",
-        ];
+        $underscoreVariant = str_replace('-', '_', $language);
+        if ($underscoreVariant !== $language) {
+            $languageVariants[] = $underscoreVariant;
+        }
+
+        $languageVariants = array_values(array_unique($languageVariants));
+
+        $paths = [];
+        foreach ($languageVariants as $variant) {
+            $paths[] = MODX_BASE_PATH . "manager/includes/lang/{$variant}/tinymce7.inc.php";
+            $paths[] = MODX_BASE_PATH . "manager/includes/lang/{$variant}/tinymce7.php";
+            $paths[] = MODX_BASE_PATH . "assets/plugins/tinymce7/langs/mgr/{$variant}.inc.php";
+            $paths[] = MODX_BASE_PATH . "assets/plugins/tinymce7/langs/mgr/{$variant}.php";
+        }
 
         foreach ($paths as $path) {
             if (!is_file($path)) {
