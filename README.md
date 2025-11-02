@@ -1,4 +1,4 @@
-# TinyMCE 7 プラグインのご案内
+# TinyMCE 7 プラグイン
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![TinyMCE 7](https://img.shields.io/badge/TinyMCE-7.x-blue.svg)](https://www.tiny.cloud/tinymce/)
