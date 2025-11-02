@@ -4,7 +4,7 @@
 [![TinyMCE 7](https://img.shields.io/badge/TinyMCE-7.x-blue.svg)](https://www.tiny.cloud/tinymce/)
 [![MODX Evolution](https://img.shields.io/badge/MODX%20Evolution-1.0%2B-0f7fb3.svg)](https://modx.jp/)
 
-MODX Evolution で最新の TinyMCE エディターを利用できるようにする追加プラグインです。
+MODX Evolution で最新の TinyMCE エディターを利用できるようにするプラグインです。
 
 > **ベータ版について**
 > 
