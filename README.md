@@ -2,50 +2,42 @@
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![TinyMCE 7](https://img.shields.io/badge/TinyMCE-7.x-blue.svg)](https://www.tiny.cloud/tinymce/)
-[![Evolution CMS](https://img.shields.io/badge/Evolution%20CMS-1.4%2B-0f7fb3.svg)](https://evo.im/)
+[![MODX Evolution](https://img.shields.io/badge/MODX Evolution%20CMS-1.0%2B-0f7fb3.svg)](https://modx.jp/)
 
-Evolution CMS で最新の TinyMCE エディターを使うための追加プラグインです。旧バージョンの TinyMCE プラグインからの移行や、既存サイトでの入れ替えにも対応しています。
+MODX Evolution で最新の TinyMCE エディターを利用できるようにする追加プラグインです。
 
-## このプラグインでできること
-- 文字装飾や画像挿入など、CMS 管理画面でのリッチテキスト編集をスムーズにします。
-- 管理画面とフロントエンドの両方に同じエディター体験を提供できます。
-- Evolution CMS 標準の MCPuk ファイルブラウザーと連携して画像やファイルを選択できます。
+## 特長
 
-## 導入手順（FTP 作業あり）
-1. プラグイン一式をローカルにダウンロードします。
-2. FTP で Evolution CMS の設置先に接続し、`assets/plugins/tinymce7/` フォルダーを作成します。
-3. このリポジトリの内容をすべて `assets/plugins/tinymce7/` にアップロードします。
-4. Evolution CMS マネージャーにログインし、**エレメント → プラグイン** を開きます。
-5. 「新規プラグイン作成」を押し、ソースコードに `plugin.tinymce7.php` の内容を貼り付けるか、該当ファイルを選択します。
-6. プラグイン名を「TinyMCE7」など任意の名前にし、以下のイベントを関連付けます。
-   - `OnRichTextEditorRegister`
-   - `OnRichTextEditorInit`
-   - `OnInterfaceSettingsRender`
-7. システム設定の「デフォルトのリッチテキストエディター」で **TinyMCE7** を選択します。
-8. 変更を保存したら、リソースの編集画面でエディターが有効になっているか確認します。
+* 文字装飾や画像挿入など、管理画面でのリッチテキスト編集をより快適にします。
+* 管理画面・フロントエンドの両方で同じエディター体験を実現します。
+* MODX Evolution 標準の MCPuk ファイルブラウザーと連携し、画像やファイルを簡単に選択できます。
 
-## よく使うカスタマイズ
-- **ツールバーの切り替え**: システム設定にある「TinyMCE7 ツールバー プリセット」から、シンプル／ベーシック／レガシー／フルを選べます。
-- **メニューバーの表示**: 必要に応じてメニューバーを表示・非表示に切り替えられます。
-- **ファイルブラウザー**: MCPuk が不要な場合は設定から無効化し、別のファイル選択方法に差し替えることもできます。
+## 導入手順
 
-より詳しい設定や開発者向けの情報は、[TECHNICAL.md](TECHNICAL.md) を参照してください。
+1. プラグイン一式をダウンロードします。
+2. FTP で MODX Evolution の設置ディレクトリに接続し、`assets/plugins/tinymce7/` フォルダーを作成します。
+3. ダウンロードしたファイルをすべて `assets/plugins/tinymce7/` にアップロードします。
+4. 管理画面にログインし、**エレメント → プラグイン** を開きます。
+5. 「新規プラグイン作成」をクリックし、ソースコード欄に `tinymce.install_base.tpl` の内容を貼り付けるか、該当ファイルを指定します。
+6. プラグイン名を「TinyMCE7」など任意に設定し、以下のイベントを関連付けます。
 
-## README に追加できるバッジ
-バッジは README の冒頭などに掲載できる小さなラベルです。サービスの状態やサポート範囲を視覚的に伝えられるので、必要に応じて以下の例を活用してください。
+   * `OnRichTextEditorRegister`
+   * `OnRichTextEditorInit`
+   * `OnInterfaceSettingsRender`
+7. 保存後、リソース編集画面でエディターが有効になっていることを確認します。
 
-| 用途 | 表示例 | Markdown コード |
-| --- | --- | --- |
-| ライセンス表記 | ![License: MIT](https://img.shields.io/badge/license-MIT-green.svg) | ``[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)`` |
-| 対応 TinyMCE バージョン | ![TinyMCE 7](https://img.shields.io/badge/TinyMCE-7.x-blue.svg) | ``[![TinyMCE 7](https://img.shields.io/badge/TinyMCE-7.x-blue.svg)](https://www.tiny.cloud/tinymce/)`` |
-| Evolution CMS 対応バージョン | ![Evolution CMS](https://img.shields.io/badge/Evolution%20CMS-1.4%2B-0f7fb3.svg) | ``[![Evolution CMS](https://img.shields.io/badge/Evolution%20CMS-1.4%2B-0f7fb3.svg)](https://evo.im/)`` |
+## カスタマイズ
 
-その他のバッジは [Shields.io](https://shields.io/) や Qiita 記事（例: <https://qiita.com/ma91n/items/6c572c5887a50223c2b1>）を参考に追加できます。必要に応じて、配布方法やバージョン管理ツールに合わせたバッジを組み合わせてください。
+* **ツールバー設定**: グローバル設定またはユーザー設定の「TinyMCE7 ツールバー プリセット」から、シンプル／ベーシック／レガシー／フルの各プリセットを選択できます。
+* **メニューバー表示**: 必要に応じてメニューバーを表示・非表示に切り替えられます。
+* **ファイルブラウザー連携**: MCPuk を使用しない場合は設定で無効化し、別のファイル選択方法に差し替えることも可能です。
+
+詳細な設定や開発者向け情報は [TECHNICAL.md](TECHNICAL.md) を参照してください。
 
 ## トラブルシューティング
-- エディターが表示されない場合は、キャッシュの削除とブラウザーの再読み込みを試してください。
-- JavaScript エラーが出ている場合は、ブラウザーの開発者ツールでコンソールを確認し、必要に応じて技術担当者に共有してください。
-- 旧 TinyMCE プラグインと併用している場合は、イベントや設定が重複しないようにご注意ください。
+
+* JavaScript エラーが発生した場合は、ブラウザーの開発者ツールでコンソールを確認し、エラー内容を技術担当者に共有してください。
 
 ## ライセンス
-このプロジェクトは [MIT License](LICENSE) の下で公開されています。
+
+本プロジェクトは [MIT License](LICENSE) のもとで公開されています。
