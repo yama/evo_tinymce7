@@ -18,7 +18,7 @@ MODX Evolution で最新の TinyMCE エディターを利用できるように�
 
 ## スクリーンショット
 
-![MODX Evolution のリソース編集画面で表示された TinyMCE 7](docs/images/resource-editor.png)
+![MODX Evolution のリソース編集画面で表示された TinyMCE 7](docs/images/resource-editor.jpg)
 
 ## 導入手順
 
