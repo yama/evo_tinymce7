@@ -1,5 +1,9 @@
 # TinyMCE 7 プラグインのご案内
 
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![TinyMCE 7](https://img.shields.io/badge/TinyMCE-7.x-blue.svg)](https://www.tiny.cloud/tinymce/)
+[![Evolution CMS](https://img.shields.io/badge/Evolution%20CMS-1.4%2B-0f7fb3.svg)](https://evo.im/)
+
 Evolution CMS で最新の TinyMCE エディターを使うための追加プラグインです。旧バージョンの TinyMCE プラグインからの移行や、既存サイトでの入れ替えにも対応しています。
 
 ## このプラグインでできること
@@ -26,6 +30,17 @@ Evolution CMS で最新の TinyMCE エディターを使うための追加プラ
 - **ファイルブラウザー**: MCPuk が不要な場合は設定から無効化し、別のファイル選択方法に差し替えることもできます。
 
 より詳しい設定や開発者向けの情報は、[TECHNICAL.md](TECHNICAL.md) を参照してください。
+
+## README に追加できるバッジ
+バッジは README の冒頭などに掲載できる小さなラベルです。サービスの状態やサポート範囲を視覚的に伝えられるので、必要に応じて以下の例を活用してください。
+
+| 用途 | 表示例 | Markdown コード |
+| --- | --- | --- |
+| ライセンス表記 | ![License: MIT](https://img.shields.io/badge/license-MIT-green.svg) | ``[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)`` |
+| 対応 TinyMCE バージョン | ![TinyMCE 7](https://img.shields.io/badge/TinyMCE-7.x-blue.svg) | ``[![TinyMCE 7](https://img.shields.io/badge/TinyMCE-7.x-blue.svg)](https://www.tiny.cloud/tinymce/)`` |
+| Evolution CMS 対応バージョン | ![Evolution CMS](https://img.shields.io/badge/Evolution%20CMS-1.4%2B-0f7fb3.svg) | ``[![Evolution CMS](https://img.shields.io/badge/Evolution%20CMS-1.4%2B-0f7fb3.svg)](https://evo.im/)`` |
+
+その他のバッジは [Shields.io](https://shields.io/) や Qiita 記事（例: <https://qiita.com/ma91n/items/6c572c5887a50223c2b1>）を参考に追加できます。必要に応じて、配布方法やバージョン管理ツールに合わせたバッジを組み合わせてください。
 
 ## トラブルシューティング
 - エディターが表示されない場合は、キャッシュの削除とブラウザーの再読み込みを試してください。
