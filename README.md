@@ -1,60 +1,36 @@
-# TinyMCE 7 プラグイン for Evolution CMS
+# TinyMCE 7 プラグインのご案内
 
-TinyMCE 7 を Evolution CMS に統合するためのプラグインです。イベント `OnRichTextEditorRegister` / `OnRichTextEditorInit` / `OnInterfaceSettingsRender` を通じてコアと連携し、マネージャー・フロントエンドの双方で最新の TinyMCE を利用できる軽量なセットアップを提供します。
+Evolution CMS で最新の TinyMCE エディターを使うための追加プラグインです。旧バージョンの TinyMCE プラグインからの移行や、既存サイトでの入れ替えにも対応しています。
 
-## 特長
-- **TinyMCE 7 のバンドルと CDN フォールバック**: `assets/plugins/tinymce7/tinymce/js/tinymce/tinymce.min.js` が存在すればローカル版を、それ以外は CDN (jsDelivr) を自動的に読み込みます。
-- **柔軟なツールバー・メニュー設定**: システム設定値やプリセット (`simple`/`basic`/`legacy`/`full`) に応じてコンフィグを上書きし、マネージャー UI から簡単にエディターの外観を切り替えられます。
-- **言語の自動検出と翻訳**: マネージャーの言語設定を基に TinyMCE の UI 言語とプラグイン設定画面のラベルを自動選択します。
-- **MCPuk ファイルブラウザー対応**: Evolution CMS 標準の MCPuk ブラウザーと連携し、`tinymce7_file_browser` パラメーターで切り替え可能です。
+## このプラグインでできること
+- 文字装飾や画像挿入など、CMS 管理画面でのリッチテキスト編集をスムーズにします。
+- 管理画面とフロントエンドの両方に同じエディター体験を提供できます。
+- Evolution CMS 標準の MCPuk ファイルブラウザーと連携して画像やファイルを選択できます。
 
-## インストール
-1. このリポジトリを `assets/plugins/tinymce7` に配置します。
-2. Evolution CMS マネージャーでプラグインを作成し、ソースに `plugin.tinymce7.php` を指定します。
-3. プラグインに以下のイベントを関連付けます。
+## 導入手順（FTP 作業あり）
+1. プラグイン一式をローカルにダウンロードします。
+2. FTP で Evolution CMS の設置先に接続し、`assets/plugins/tinymce7/` フォルダーを作成します。
+3. このリポジトリの内容をすべて `assets/plugins/tinymce7/` にアップロードします。
+4. Evolution CMS マネージャーにログインし、**エレメント → プラグイン** を開きます。
+5. 「新規プラグイン作成」を押し、ソースコードに `plugin.tinymce7.php` の内容を貼り付けるか、該当ファイルを選択します。
+6. プラグイン名を「TinyMCE7」など任意の名前にし、以下のイベントを関連付けます。
    - `OnRichTextEditorRegister`
    - `OnRichTextEditorInit`
    - `OnInterfaceSettingsRender`
-4. システム設定の「デフォルトのリッチテキストエディター」を **TinyMCE7** に変更します。
+7. システム設定の「デフォルトのリッチテキストエディター」で **TinyMCE7** を選択します。
+8. 変更を保存したら、リソースの編集画面でエディターが有効になっているか確認します。
 
-## 基本設定
-TinyMCE の初期設定は `assets/plugins/tinymce7/config/` 配下の JSON ファイルで管理します。
+## よく使うカスタマイズ
+- **ツールバーの切り替え**: システム設定にある「TinyMCE7 ツールバー プリセット」から、シンプル／ベーシック／レガシー／フルを選べます。
+- **メニューバーの表示**: 必要に応じてメニューバーを表示・非表示に切り替えられます。
+- **ファイルブラウザー**: MCPuk が不要な場合は設定から無効化し、別のファイル選択方法に差し替えることもできます。
 
-| ファイル | 用途 |
-| --- | --- |
-| `manager.json` | マネージャー画面で読み込む設定。高さ・プラグイン・ツールバーなどを定義します。|
-| `frontend.json` | `OnRichTextEditorInit` の `forfrontend` パラメーターが真の場合に使用します。|
-| `toolbar-presets.json` | システム設定から選択できるツールバー定義のプリセット集です。|
+より詳しい設定や開発者向けの情報は、[TECHNICAL.md](TECHNICAL.md) を参照してください。
 
-JSON のキーは TinyMCE 公式ドキュメントに準拠しており、追加・削除も自由です。設定ファイルを編集した場合は Evolution CMS のキャッシュをクリアしてください。
-
-## システム設定パラメーター
-プラグインは以下のシステム設定を認識します。
-
-| キー | 説明 |
-| --- | --- |
-| `tinymce7_toolbar_preset` | `simple` / `basic` / `legacy` / `full` のプリセットを選択します (未設定時は `legacy`)。 |
-| `tinymce7_menubar` | メニューバーの表示 (`1`) / 非表示 (`0`) / TinyMCE 既定値 (空)。 |
-| `tinymce7_entermode` | Enter キーで段落 (`p`) か改行 (`br`) を挿入するかを決定します。 |
-| 互換キー (`tinymce_toolbar_preset`, `tinymce_menubar`, `tinymce4_entermode` など) | 旧 TinyMCE プラグインとの互換性のために自動的に解釈されます。 |
-
-## イベントパラメーター
-`OnRichTextEditorInit` イベントに渡されたパラメーターは自動的に TinyMCE の設定に反映されます。
-
-| パラメーター | 役割 |
-| --- | --- |
-| `elements` | 対象要素の ID。配列またはカンマ区切り文字列を指定できます。 |
-| `height` / `width` | エディター領域のサイズ。TinyMCE 設定の `height` / `width` を上書きします。 |
-| `forfrontend` | 真の場合は `frontend.json` を読み込みます。 |
-| `tinymce7_file_browser` / `file_browser` | `mcpuk` (既定) または `none` を指定します。 |
-
-## ファイルブラウザーのカスタマイズ
-MCPuk ブラウザーを有効にすると、`js/mcpuk-picker.js` が TinyMCE の `file_picker_callback` と連携し、選択したファイルの URL を CMS のルートに合わせて正規化します。`tinymce7_file_browser` に `none` を指定することでカスタム実装へ差し替えることも可能です。
-
-## 開発者向けメモ
-- オートローダーは `TinyMCE7\` 名前空間を `src/TinyMCE7/` にマッピングします。
-- プラグイン本体は `plugin.tinymce7.php` をエントリーポイントとして `TinyMCE7\Plugin::handle()` を実行します。
-- Evolution CMS のグローバル関数 `evo()` は `src/bootstrap.php` で提供されます。
+## トラブルシューティング
+- エディターが表示されない場合は、キャッシュの削除とブラウザーの再読み込みを試してください。
+- JavaScript エラーが出ている場合は、ブラウザーの開発者ツールでコンソールを確認し、必要に応じて技術担当者に共有してください。
+- 旧 TinyMCE プラグインと併用している場合は、イベントや設定が重複しないようにご注意ください。
 
 ## ライセンス
 このプロジェクトは [MIT License](LICENSE) の下で公開されています。
