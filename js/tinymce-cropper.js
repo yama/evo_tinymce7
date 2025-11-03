@@ -193,6 +193,28 @@
       return;
     }
 
+    // 相対URLを絶対URLに変換
+    let absoluteSrc = src;
+    if (!/^https?:\/\//i.test(src) && !/^data:/i.test(src)) {
+      // /で始まる絶対パスの場合は、ホスト部分のみを追加
+      if (src.charAt(0) === '/') {
+        const origin = window.location.origin;
+        absoluteSrc = origin + src;
+      } else {
+        // 相対パスの場合、TinyMCEのdocument_base_urlまたはサイトルートを使用
+        let baseUrl = window.location.origin + '/';
+        if (editor && editor.settings && editor.settings.document_base_url) {
+          baseUrl = editor.settings.document_base_url;
+        }
+        try {
+          absoluteSrc = new URL(src, baseUrl).href;
+        } catch (e) {
+          console.error('TinyMCE7 Cropper: Failed to resolve image URL', e);
+          absoluteSrc = src;
+        }
+      }
+    }
+
     ensureCropperAssets().then(function (CropperClass) {
       ensureModalStyles();
 
@@ -216,7 +238,8 @@
 
       const image = document.createElement('img');
       image.alt = options.labels.modalTitle;
-      image.src = src;
+      image.src = absoluteSrc;
+      image.crossOrigin = 'anonymous'; // CORS対応
       canvasWrapper.appendChild(image);
       dialog.appendChild(canvasWrapper);
 
