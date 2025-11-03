@@ -287,6 +287,10 @@
       let isActive = true;
       const destroyListeners = [];
 
+      // オーバーレイにフォーカスを設定してキーイベントを受け取れるようにする
+      overlay.setAttribute('tabindex', '-1');
+      overlay.focus();
+
       function registerListener(target, type, handler) {
         target.addEventListener(type, handler);
         destroyListeners.push(function () {
@@ -391,12 +395,24 @@
         }
       });
 
+      // overlayでキーイベントをキャッチしてESCキーでモーダルを閉じる
+      registerListener(overlay, 'keydown', function (event) {
+        if (event.key === 'Escape' || event.key === 'Esc') {
+          event.preventDefault();
+          event.stopPropagation();
+          closeModal(overlay, cropperInstance, cleanup);
+        }
+      });
+
+      // ドキュメントレベルでもESCキーをキャッチ（フォールバック）
       registerListener(document, 'keydown', function (event) {
         if (!isActive) {
           return;
         }
-        if (event.key === 'Escape') {
+
+        if (event.key === 'Escape' || event.key === 'Esc') {
           event.preventDefault();
+          event.stopPropagation();
           closeModal(overlay, cropperInstance, cleanup);
         }
       });
@@ -525,9 +541,11 @@
       registerEditor(event.editor);
     });
 
-    global.tinymce.editors.forEach(function (editor) {
-      registerEditor(editor);
-    });
+    if (Array.isArray(global.tinymce.editors)) {
+      global.tinymce.editors.forEach(function (editor) {
+        registerEditor(editor);
+      });
+    }
   }
 
   if (document.readyState === 'loading') {
