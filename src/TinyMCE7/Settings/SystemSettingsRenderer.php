@@ -53,8 +53,22 @@ final class SystemSettingsRenderer
         ];
 
         $html = [];
-        $cssUrl = MODX_BASE_URL . 'assets/plugins/tinymce7/tinymce7.settings.css';
-        $html[] = '<link rel="stylesheet" type="text/css" href="' . htmlspecialchars($cssUrl, ENT_QUOTES, 'UTF-8') . '">';
+        $cssRelativePath = 'assets/plugins/tinymce7/tinymce7.settings.css';
+        $cssUrlBase = defined('MODX_SITE_URL') ? (string)MODX_SITE_URL : (string)MODX_BASE_URL;
+        $cssUrl = rtrim($cssUrlBase, '/') . '/' . $cssRelativePath;
+        $cssFile = MODX_BASE_PATH . $cssRelativePath;
+
+        if (is_readable($cssFile)) {
+            $evo = evo();
+            if (is_object($evo) && method_exists($evo, 'regClientCSS')) {
+                $evo->regClientCSS($cssUrl);
+            } else {
+                $inlineCss = (string)file_get_contents($cssFile);
+                if ($inlineCss !== '') {
+                    $html[] = '<style>' . $inlineCss . '</style>';
+                }
+            }
+        }
         $html[] = '<table id="editorRow_TinyMCE7" class="settings editorRow">';
         $html[] = '  <tr class="row1">';
         $html[] = '    <th colspan="2" class="tinymce7-settings__header"><h4 class="tinymce7-settings__title">' . htmlspecialchars($this->t('tinymce7_settings_header', 'TinyMCE 7'), ENT_QUOTES, 'UTF-8') . '</h4></th>';
