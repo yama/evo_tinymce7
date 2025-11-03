@@ -6,5 +6,6 @@
   "branding": false,
   "promotion": false,
   "relative_urls": false,
-  "convert_urls": false
+  "convert_urls": false,
+  "license_key": "gpl"
 }
