@@ -17,7 +17,6 @@
       "lists",
       "media",
       "nonbreaking",
-      "paste",
       "preview",
       "save",
       "searchreplace",
@@ -28,7 +27,7 @@
     ],
     "menubar": "edit view insert format tools table help",
     "toolbar": [
-      "undo redo bold forecolor backcolor strikethrough formatselect fontsizeselect pastetext table alignleft aligncenter alignright template code fullscreen help",
+      "undo redo bold forecolor backcolor strikethrough formatselect fontsizeselect table alignleft aligncenter alignright template code fullscreen help",
       "image media link unlink anchor bullist numlist blockquote outdent indent hr visualblocks visualchars removeformat"
     ],
     "toolbar_mode": "wrap"
