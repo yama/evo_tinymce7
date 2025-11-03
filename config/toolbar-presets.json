@@ -27,6 +27,7 @@
       "wordcount"
     ],
     "menubar": "edit view insert format tools table help",
+    "quickbars_insert_toolbar": false,
     "toolbar": [
       "undo redo bold forecolor backcolor strikethrough formatselect fontsizeselect table alignleft aligncenter alignright template code fullscreen help",
       "image media link unlink anchor bullist numlist blockquote outdent indent hr visualblocks visualchars removeformat"
@@ -40,26 +41,23 @@
       "lists",
       "link",
       "image",
-      "charmap",
       "preview",
       "anchor",
-      "searchreplace",
-      "visualblocks",
       "code",
       "fullscreen",
-      "insertdatetime",
-      "media",
       "table",
+      "quickbars",
       "help",
       "wordcount"
     ],
     "menubar": "edit view insert format tools table help",
-    "toolbar": "undo redo blocks bold italic backcolor alignleft aligncenter alignright alignjustify bullist numlist outdent indent removeformat help",
+    "quickbars_insert_toolbar": false,
+    "toolbar": "bold forecolor backcolor strikethrough removeformat quickimage image link unlink anchor bullist numlist table fullscreen help",
     "height": 500,
     "content_style": "body { font-family:Helvetica,Arial,sans-serif; font-size:16px }"
   },
   "full": {
-    "menubar": "file edit view insert format tools table help",
+    "menubar": "edit view insert format tools table help",
     "plugins": [
       "advlist",
       "anchor",

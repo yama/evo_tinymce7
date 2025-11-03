@@ -63,6 +63,13 @@ final class EditorInitializer
 
         $uiLanguage = $this->language->detectUiLanguage();
 
+        if (array_key_exists('image_cropper', $config)) {
+            $imageCropperOptions = is_array($config['image_cropper']) ? $config['image_cropper'] : [];
+            unset($config['image_cropper']);
+        } else {
+            $imageCropperOptions = [];
+        }
+
         if (empty($config['language'])) {
             $config['language'] = $uiLanguage;
         }
@@ -70,8 +77,17 @@ final class EditorInitializer
         if (empty($config['language_url'])) {
             $config['language_url'] = $this->language->languageUrl((string)$config['language']);
         }
+
+        // URL handling configuration
+        // See: https://www.tiny.cloud/docs/tinymce/latest/url-handling/
         $config['convert_urls'] = $config['convert_urls'] ?? false;
         $config['relative_urls'] = $config['relative_urls'] ?? false;
+
+        // Set document_base_url to site root for correct relative path resolution in manager
+        // Without this, relative URLs would be resolved from /manager/ directory
+        if (empty($config['document_base_url']) && defined('MODX_SITE_URL')) {
+            $config['document_base_url'] = MODX_SITE_URL;
+        }
 
         $config = $this->preferences->applyToolbarPreset($config);
         $config = $this->preferences->applyMenubarPreference($config);
@@ -84,6 +100,17 @@ final class EditorInitializer
         $scripts = [
             $this->scriptFactory->scriptTag($this->scriptFactory->tinymceScriptUrl()),
         ];
+
+        $imageCropperJson = json_encode($imageCropperOptions, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        if ($imageCropperJson === false) {
+            $imageCropperJson = '{}';
+        }
+
+        $scripts[] = $this->scriptFactory->inlineScript('window.tinymce7CropperConfig = ' . $imageCropperJson . ';');
+
+        if (!empty($imageCropperOptions['enabled'])) {
+            $scripts[] = $this->scriptFactory->scriptTag(MODX_BASE_URL . 'assets/plugins/tinymce7/js/tinymce-cropper.js');
+        }
 
         if ($fileBrowser === 'mcpuk') {
             $scripts[] = $this->scriptFactory->inlineScript($this->fileBrowserResolver->mcpukBootstrapScript());

@@ -11,6 +11,7 @@
 - プラグインのエントリーポイント: `plugin.tinymce7.php`
 - 設定ファイル: `config/manager.json`, `config/frontend.json`, `config/toolbar-presets.json`
 - MCPuk 連携スクリプト: `js/mcpuk-picker.js`
+- 画像編集モーダル連携スクリプト: `js/tinymce-cropper.js`
 - TinyMCE バンドル: `tinymce/js/tinymce/`
 - オートローダー: `src/bootstrap.php`
 
@@ -35,6 +36,39 @@ Evolution CMS では `assets/plugins/tinymce7/` 配下に設置し、Composer �
 | `toolbar-presets.json` | 管理画面のプリセット選択肢（simple/basic/legacy/full など）を定義します。|
 
 更新後は Evolution CMS のキャッシュをクリアして反映させます。
+
+### 画像編集 (`image_cropper` 設定)
+
+`config/manager.json` には `image_cropper` オブジェクトを追加しており、Cropper.js を利用したトリミング／回転／リサイズ機能を制御します。
+
+```json
+"image_cropper": {
+  "enabled": true,
+  "jsUrl": "https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js",
+  "cssUrl": "https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css",
+  "enableDoubleClick": true,
+  "outputMimeType": "image/png",
+  "outputQuality": 0.92,
+  "labels": {
+    "editTooltip": "画像を編集"
+  },
+  "cropperOptions": {
+    "viewMode": 1,
+    "autoCropArea": 1
+  }
+}
+```
+
+主なオプションは次の通りです。
+
+- `enabled`: `true` にすると画像選択時に「画像を編集」ボタンが表示されます。
+- `jsUrl` / `cssUrl`: Cropper.js を読み込む CDN やローカルファイルの URL。空にすると既定値が利用されます。
+- `enableDoubleClick`: `true` の場合は画像ダブルクリックでもモーダルが開きます。
+- `outputMimeType` / `outputQuality`: `canvas.toDataURL()` の出力形式と品質。JPEG 出力も指定可能です。
+- `labels`: モーダル内の文言を上書きできます。
+- `cropperOptions`: Cropper.js の初期化オプションをそのまま渡します。
+
+フロントエンド用設定でも `image_cropper` を定義すれば同様の機能を利用できます。不要な場合は `enabled` を `false` に設定するか、オブジェクトごと削除してください。
 
 ## システム設定キー
 プラグインが参照する主なシステム設定キーです。旧 TinyMCE プラグインのキーも互換処理しています。
