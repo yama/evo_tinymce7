@@ -2,6 +2,7 @@
   "simple": {},
   "legacy": {
     "plugins": [
+      "quickbars",
       "advlist",
       "anchor",
       "autolink",
