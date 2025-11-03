@@ -350,9 +350,9 @@
             dataUrl = canvas.toDataURL(mimeType);
           }
         } catch (error) {
-          console.error('TinyMCE7 Cropper: Failed to export image.', error);
+          console.error('TinyMCE7 Cropper: Failed to export image (CORS制約の可能性).', error);
           if (editor && editor.windowManager) {
-            editor.windowManager.alert('画像を更新できませんでした: ' + error.message);
+            editor.windowManager.alert('画像を更新できませんでした: ' + error.message + '\n\nCORS制約により、他のサーバ上の画像は編集できない可能性があります。');
           }
           return;
         }
@@ -365,17 +365,24 @@
         const newHeight = canvas.height;
 
         editor.undoManager.transact(function () {
-          imgNode.removeAttribute('srcset');
-          imgNode.src = dataUrl;
-          if (newWidth) {
-            imgNode.setAttribute('width', String(newWidth));
-          }
-          if (newHeight) {
-            imgNode.setAttribute('height', String(newHeight));
-          }
+          // TinyMCE の DOM API を使って属性を設定
+          editor.dom.setAttribs(imgNode, {
+            'src': dataUrl,
+            'width': String(newWidth),
+            'height': String(newHeight)
+          });
+          // srcset 属性を削除
+          editor.dom.setAttrib(imgNode, 'srcset', null);
         });
+
         editor.nodeChanged();
-        editor.fire('change');
+
+        // TinyMCE 7+ では fire() は非推奨、dispatch() を使用
+        if (typeof editor.dispatch === 'function') {
+          editor.dispatch('change');
+        } else {
+          editor.fire('change');
+        }
 
         closeModal(overlay, cropperInstance, cleanup);
         editor.selection.select(imgNode);
