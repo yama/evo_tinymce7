@@ -77,12 +77,12 @@ final class EditorInitializer
         if (empty($config['language_url'])) {
             $config['language_url'] = $this->language->languageUrl((string)$config['language']);
         }
-        
+
         // URL handling configuration
         // See: https://www.tiny.cloud/docs/tinymce/latest/url-handling/
         $config['convert_urls'] = $config['convert_urls'] ?? false;
         $config['relative_urls'] = $config['relative_urls'] ?? false;
-        
+
         // Set document_base_url to site root for correct relative path resolution in manager
         // Without this, relative URLs would be resolved from /manager/ directory
         if (empty($config['document_base_url']) && defined('MODX_SITE_URL')) {
