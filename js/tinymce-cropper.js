@@ -69,7 +69,7 @@
       '.tinymce7-cropper-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);display:flex;align-items:center;justify-content:center;z-index:100000;}',
       '.tinymce7-cropper-dialog{background:#fff;border-radius:12px;box-shadow:0 20px 50px rgba(0,0,0,0.3);max-width:90vw;max-height:90vh;width:720px;display:flex;flex-direction:column;gap:16px;padding:16px;box-sizing:border-box;}',
       '.tinymce7-cropper-title{font-size:16px;font-weight:600;margin:0;}',
-      '.tinymce7-cropper-canvas{width:min(600px, 80vw, 80vh);height:min(600px, 80vw, 80vh);display:flex;align-items:center;justify-content:center;overflow:hidden;}',
+      '.tinymce7-cropper-canvas{flex:1 1 auto;min-height:240px;display:flex;align-items:center;justify-content:center;overflow:hidden;}',
       '.tinymce7-cropper-canvas img{max-width:100%;max-height:100%;display:block;}',
       '.tinymce7-cropper-toolbar{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}',
       '.tinymce7-cropper-toolbar button{padding:6px 12px;font-size:14px;border-radius:4px;border:1px solid #c3c3c3;background:#f3f3f3;cursor:pointer;transition:background 0.2s,border-color 0.2s;}',
