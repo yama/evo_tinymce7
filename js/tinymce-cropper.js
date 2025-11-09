@@ -14,6 +14,7 @@
   };
   const defaultCropperOptions = {
     viewMode: 1,
+    dragMode: 'move',
     autoCrop: false,
     autoCropArea: 0.8,
     responsive: true,
