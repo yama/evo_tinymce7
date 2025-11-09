@@ -310,6 +310,28 @@
         destroyListeners.length = 0;
       }
 
+      function fitCropBoxToImageBounds(instance) {
+        if (!instance || typeof instance.getImageData !== 'function' || typeof instance.setCropBoxData !== 'function') {
+          return;
+        }
+
+        const imageData = instance.getImageData();
+        if (!imageData) {
+          return;
+        }
+
+        try {
+          instance.setCropBoxData({
+            left: imageData.left,
+            top: imageData.top,
+            width: imageData.width,
+            height: imageData.height
+          });
+        } catch (error) {
+          console.warn('TinyMCE7 Cropper: Failed to adjust crop box after rotation.', error);
+        }
+      }
+
       function applyChanges() {
         if (!cropperInstance) {
           return;
@@ -436,9 +458,11 @@
         switch (action) {
           case 'rotate-left':
             cropperInstance.rotate(-90);
+            fitCropBoxToImageBounds(cropperInstance);
             break;
           case 'rotate-right':
             cropperInstance.rotate(90);
+            fitCropBoxToImageBounds(cropperInstance);
             break;
           case 'zoom-in':
             cropperInstance.zoom(0.1);
