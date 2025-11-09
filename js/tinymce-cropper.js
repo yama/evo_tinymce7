@@ -316,13 +316,10 @@
       }
 
       function fitCropBoxToImageBounds(instance) {
-        if (!instance || typeof instance.getImageData !== 'function' || typeof instance.setCropBoxData !== 'function') {
+        if (!instance || typeof instance.getImageData !== 'function') {
           return;
         }
 
-        // Allow Cropper.js to finish applying the rotation before querying the
-        // geometry. Without deferring the measurement, the crop box will use the
-        // pre-rotation bounds and the preview keeps trimming the image.
         scheduleFrame(function () {
           const imageData = instance.getImageData();
           if (!imageData) {
@@ -330,54 +327,74 @@
           }
 
           const containerData = typeof instance.getContainerData === 'function' ? instance.getContainerData() : null;
+          const canvasData = typeof instance.getCanvasData === 'function' ? instance.getCanvasData() : null;
 
-          function applyCropBox(data) {
-            try {
-              instance.setCropBoxData({
-                left: data.left,
-                top: data.top,
-                width: data.width,
-                height: data.height
-              });
-            } catch (error) {
-              console.warn('TinyMCE7 Cropper: Failed to adjust crop box after rotation.', error);
-            }
-          }
-
-          const imageWidth = Math.abs(imageData.width);
-          const imageHeight = Math.abs(imageData.height);
-
-          if (!containerData || (imageWidth <= containerData.width && imageHeight <= containerData.height)) {
-            applyCropBox(imageData);
+          if (!canvasData) {
             return;
           }
 
-          const naturalWidth = imageData.naturalWidth;
-          const naturalHeight = imageData.naturalHeight;
+          const containerWidth = containerData ? containerData.width : canvasData.width;
+          const containerHeight = containerData ? containerData.height : canvasData.height;
+
+          if (!containerWidth || !containerHeight) {
+            return;
+          }
+
+          const naturalWidth = Math.abs(imageData.naturalWidth || 0);
+          const naturalHeight = Math.abs(imageData.naturalHeight || 0);
+
           if (!naturalWidth || !naturalHeight) {
-            applyCropBox(imageData);
             return;
           }
 
-          const baseRatio = imageWidth / naturalWidth;
-          const widthScale = containerData.width / imageWidth;
-          const heightScale = containerData.height / imageHeight;
-          const zoomScale = Math.min(widthScale, heightScale);
+          const rotate = Math.abs(imageData.rotate || 0) % 180;
+          const rotatedNaturalWidth = rotate === 90 ? naturalHeight : naturalWidth;
+          const rotatedNaturalHeight = rotate === 90 ? naturalWidth : naturalHeight;
 
-          if (!(zoomScale < 1) || typeof instance.zoomTo !== 'function') {
-            applyCropBox(imageData);
+          const currentDisplayRatio = Math.abs(imageData.width) / rotatedNaturalWidth || 1;
+          let targetWidth = rotatedNaturalWidth * currentDisplayRatio;
+          let targetHeight = rotatedNaturalHeight * currentDisplayRatio;
+
+          const widthScale = containerWidth / targetWidth;
+          const heightScale = containerHeight / targetHeight;
+          const scale = Math.min(widthScale, heightScale, 1);
+
+          if (scale < 1) {
+            targetWidth *= scale;
+            targetHeight *= scale;
+          }
+
+          const baseLeft = containerData ? containerData.left || 0 : 0;
+          const baseTop = containerData ? containerData.top || 0 : 0;
+          const offsetLeft = baseLeft + (containerWidth - targetWidth) / 2;
+          const offsetTop = baseTop + (containerHeight - targetHeight) / 2;
+
+          try {
+            instance.setCanvasData({
+              left: offsetLeft,
+              top: offsetTop,
+              width: targetWidth,
+              height: targetHeight
+            });
+          } catch (error) {
+            console.warn('TinyMCE7 Cropper: Failed to resize canvas after rotation.', error);
+          }
+
+          const adjustedCanvasData = typeof instance.getCanvasData === 'function' ? instance.getCanvasData() : null;
+          if (!adjustedCanvasData || typeof instance.setCropBoxData !== 'function') {
             return;
           }
 
-          const targetRatio = baseRatio * zoomScale;
-          instance.zoomTo(targetRatio);
-
-          scheduleFrame(function () {
-            const adjustedImageData = instance.getImageData();
-            if (adjustedImageData) {
-              applyCropBox(adjustedImageData);
-            }
-          });
+          try {
+            instance.setCropBoxData({
+              left: adjustedCanvasData.left,
+              top: adjustedCanvasData.top,
+              width: adjustedCanvasData.width,
+              height: adjustedCanvasData.height
+            });
+          } catch (error) {
+            console.warn('TinyMCE7 Cropper: Failed to adjust crop box after rotation.', error);
+          }
         });
       }
 
