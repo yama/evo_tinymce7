@@ -134,6 +134,12 @@
       return src;
     }
 
+    // プロトコル相対URL (//cdn.example.com/image.jpg)
+    if (src.substring(0, 2) === '//') {
+      return window.location.protocol + src;
+    }
+
+    // 絶対パス (/path/to/image.jpg)
     if (src.charAt(0) === '/') {
       return window.location.origin + src;
     }
@@ -346,6 +352,9 @@
             break;
           case 'reset':
             cropperInstance.reset();
+            break;
+          default:
+            console.warn('TinyMCE7 Cropper: Unknown action:', action);
             break;
         }
       });
