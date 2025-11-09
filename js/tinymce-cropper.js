@@ -259,11 +259,20 @@
         { action: 'reset', label: options.labels.reset }
       ];
 
+      let cropButton = null;
+
       toolbarButtons.forEach(function (buttonConfig) {
         const button = document.createElement('button');
         button.type = 'button';
         button.dataset.action = buttonConfig.action;
         button.textContent = buttonConfig.label;
+
+        // 切り抜きボタンは初期状態で非活性
+        if (buttonConfig.action === 'crop') {
+          button.disabled = true;
+          cropButton = button;
+        }
+
         toolbar.appendChild(button);
       });
 
@@ -455,6 +464,10 @@
             break;
           case 'reset':
             cropperInstance.reset();
+            // autoCrop: falseなので、リセット後は切り抜き領域がクリアされる
+            if (cropButton) {
+              cropButton.disabled = true;
+            }
             break;
           default:
             break;
@@ -467,6 +480,25 @@
           if (typeof cropperConfig.aspectRatio !== 'number') {
             cropperConfig.aspectRatio = NaN;
           }
+
+          // Cropper.jsイベントハンドラを設定
+          cropperConfig.cropstart = function () {
+            // ユーザーが切り抜き範囲を選択し始めたら切り抜きボタンを有効化
+            if (cropButton) {
+              cropButton.disabled = false;
+            }
+          };
+
+          cropperConfig.ready = function () {
+            // 初期化時に切り抜き領域があるかチェック（autoCrop: falseなので通常はない）
+            if (cropperInstance) {
+              const cropBoxData = cropperInstance.getCropBoxData();
+              if (cropButton) {
+                cropButton.disabled = !cropBoxData || cropBoxData.width === 0;
+              }
+            }
+          };
+
           cropperInstance = new CropperClass(image, cropperConfig);
         } catch (error) {
           console.error('TinyMCE7 Cropper: Failed to initialise.', error);
