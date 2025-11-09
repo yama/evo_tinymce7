@@ -13,16 +13,7 @@
     zoomOut: '縮小'
   };
   const defaultCropperOptions = {
-    viewMode: 1,
-    dragMode: 'move',
-    autoCropArea: 0.8,
-    responsive: true,
-    movable: true,
-    zoomable: true,
-    zoomOnWheel: true,
-    rotatable: true,
-    scalable: true,
-    checkOrientation: true
+    dragMode: 'move'
   };
   const defaultCanvasOptions = {
     maxWidth: null,
