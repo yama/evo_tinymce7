@@ -16,7 +16,7 @@
   const defaultCropperOptions = {
     viewMode: 1,
     autoCrop: false,
-    autoCropArea: 1,
+    autoCropArea: 0.8,
     responsive: true,
     movable: true,
     zoomable: true,
