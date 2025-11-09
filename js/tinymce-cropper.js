@@ -120,10 +120,16 @@
         loadAsset(options.cssUrl, 'css'),
         loadAsset(options.jsUrl, 'script')
       ]).then(function () {
-        if (typeof global.Cropper === 'undefined') {
+        // cropperjs 2.0系では .default でアクセスする必要がある場合がある
+        var CropperConstructor = global.Cropper;
+        if (typeof CropperConstructor === 'undefined') {
           throw new Error('Cropper.js is not available.');
         }
-        return global.Cropper;
+        // デフォルトエクスポートの場合
+        if (CropperConstructor.default && typeof CropperConstructor.default === 'function') {
+          return CropperConstructor.default;
+        }
+        return CropperConstructor;
       });
     }
     return scriptState.assetsPromise;
