@@ -352,12 +352,7 @@
 
       function initializeCropper() {
         try {
-          const cropperConfig = Object.assign({}, options.cropperOptions);
-          if (typeof cropperConfig.aspectRatio !== 'number') {
-            cropperConfig.aspectRatio = NaN;
-          }
-
-          cropperInstance = new CropperClass(image, cropperConfig);
+          cropperInstance = new CropperClass(image, options.cropperOptions);
         } catch (error) {
           console.error('TinyMCE7 Cropper: Failed to initialise.', error);
           closeModal(overlay, cropperInstance, cleanup);
