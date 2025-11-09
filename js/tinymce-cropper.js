@@ -6,6 +6,7 @@
     modalTitle: '画像の編集',
     apply: '適用',
     cancel: 'キャンセル',
+    crop: '切り抜き',
     rotateLeft: '左回転',
     rotateRight: '右回転',
     reset: 'リセット',
@@ -14,6 +15,7 @@
   };
   const defaultCropperOptions = {
     viewMode: 1,
+    autoCrop: false,
     autoCropArea: 1,
     responsive: true,
     movable: true,
@@ -248,6 +250,7 @@
       dialog.appendChild(toolbar);
 
       const toolbarButtons = [
+        { action: 'crop', label: options.labels.crop },
         { action: 'rotate-left', label: options.labels.rotateLeft },
         { action: 'rotate-right', label: options.labels.rotateRight },
         { action: 'zoom-in', label: options.labels.zoomIn },
@@ -434,6 +437,9 @@
           return;
         }
         switch (action) {
+          case 'crop':
+            cropperInstance.crop();
+            break;
           case 'rotate-left':
             cropperInstance.rotate(-90);
             break;
