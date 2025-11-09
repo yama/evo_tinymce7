@@ -22,8 +22,8 @@
   const options = Object.assign(
     {
       enabled: false,
-      cssUrl: '',
-      jsUrl: 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.1/cropper.min.js',
+      cssUrl: 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css',
+      jsUrl: 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js',
       enableDoubleClick: true,
       outputMimeType: 'image/png',
       outputQuality: 0.92,
@@ -120,16 +120,10 @@
         loadAsset(options.cssUrl, 'css'),
         loadAsset(options.jsUrl, 'script')
       ]).then(function () {
-        // cropperjs 2.0系では .default でアクセスする必要がある場合がある
-        var CropperConstructor = global.Cropper;
-        if (typeof CropperConstructor === 'undefined') {
+        if (typeof global.Cropper === 'undefined') {
           throw new Error('Cropper.js is not available.');
         }
-        // デフォルトエクスポートの場合
-        if (CropperConstructor.default && typeof CropperConstructor.default === 'function') {
-          return CropperConstructor.default;
-        }
-        return CropperConstructor;
+        return global.Cropper;
       });
     }
     return scriptState.assetsPromise;
