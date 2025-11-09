@@ -315,85 +315,103 @@
         destroyListeners.length = 0;
       }
 
+      function calculateAvailableCanvasSpace() {
+        const minDimension = 120;
+        const dialogStyle = global.getComputedStyle(dialog);
+        const paddingLeft = parseFloat(dialogStyle.paddingLeft) || 0;
+        const paddingRight = parseFloat(dialogStyle.paddingRight) || 0;
+        const paddingTop = parseFloat(dialogStyle.paddingTop) || 0;
+        const paddingBottom = parseFloat(dialogStyle.paddingBottom) || 0;
+        const gapValue = parseFloat(dialogStyle.rowGap || dialogStyle.gap || 0) || 0;
+        const childCount = dialog.children.length;
+        const totalGap = gapValue * Math.max(0, childCount - 1);
+
+        const dialogWidth = dialog.clientWidth;
+        const maxDialogWidth = Math.min(dialogWidth, Math.floor(window.innerWidth * 0.9));
+        const availableWidth = Math.max(minDimension, maxDialogWidth - paddingLeft - paddingRight);
+
+        const maxDialogHeight = window.innerHeight * 0.9;
+        const occupiedHeight = paddingTop + paddingBottom + totalGap + title.offsetHeight + toolbar.offsetHeight + actions.offsetHeight;
+        const availableHeight = Math.max(minDimension, maxDialogHeight - occupiedHeight);
+
+        return {
+          width: availableWidth,
+          height: availableHeight
+        };
+      }
+
       function fitCropBoxToImageBounds(instance) {
-        if (!instance || typeof instance.getImageData !== 'function') {
+        if (!instance || typeof instance.getCanvasData !== 'function') {
           return;
         }
 
         scheduleFrame(function () {
-          const imageData = instance.getImageData();
-          if (!imageData) {
-            return;
-          }
-
-          const containerData = typeof instance.getContainerData === 'function' ? instance.getContainerData() : null;
-          const canvasData = typeof instance.getCanvasData === 'function' ? instance.getCanvasData() : null;
-
+          const canvasData = instance.getCanvasData();
           if (!canvasData) {
             return;
           }
 
-          const containerWidth = containerData ? containerData.width : canvasData.width;
-          const containerHeight = containerData ? containerData.height : canvasData.height;
+          const canvasWidth = Math.abs(canvasData.width || 0);
+          const canvasHeight = Math.abs(canvasData.height || 0);
 
-          if (!containerWidth || !containerHeight) {
+          if (!canvasWidth || !canvasHeight) {
             return;
           }
 
-          const naturalWidth = Math.abs(imageData.naturalWidth || 0);
-          const naturalHeight = Math.abs(imageData.naturalHeight || 0);
-
-          if (!naturalWidth || !naturalHeight) {
+          const available = calculateAvailableCanvasSpace();
+          if (!available.width || !available.height) {
             return;
           }
 
-          const rotate = Math.abs(imageData.rotate || 0) % 180;
-          const rotatedNaturalWidth = rotate === 90 ? naturalHeight : naturalWidth;
-          const rotatedNaturalHeight = rotate === 90 ? naturalWidth : naturalHeight;
+          const aspectRatio = canvasWidth / canvasHeight;
+          let targetWidth = available.width;
+          let targetHeight = targetWidth / aspectRatio;
 
-          const currentDisplayRatio = Math.abs(imageData.width) / rotatedNaturalWidth || 1;
-          let targetWidth = rotatedNaturalWidth * currentDisplayRatio;
-          let targetHeight = rotatedNaturalHeight * currentDisplayRatio;
-
-          const widthScale = containerWidth / targetWidth;
-          const heightScale = containerHeight / targetHeight;
-          const scale = Math.min(widthScale, heightScale, 1);
-
-          if (scale < 1) {
-            targetWidth *= scale;
-            targetHeight *= scale;
+          if (targetHeight > available.height) {
+            targetHeight = available.height;
+            targetWidth = targetHeight * aspectRatio;
           }
 
-          const baseLeft = containerData ? containerData.left || 0 : 0;
-          const baseTop = containerData ? containerData.top || 0 : 0;
-          const offsetLeft = baseLeft + (containerWidth - targetWidth) / 2;
-          const offsetTop = baseTop + (containerHeight - targetHeight) / 2;
-
-          try {
-            instance.setCanvasData({
-              left: offsetLeft,
-              top: offsetTop,
-              width: targetWidth,
-              height: targetHeight
-            });
-          } catch (error) {
-            console.warn('TinyMCE7 Cropper: Failed to resize canvas after rotation.', error);
-          }
-
-          const adjustedCanvasData = typeof instance.getCanvasData === 'function' ? instance.getCanvasData() : null;
-          if (!adjustedCanvasData || typeof instance.setCropBoxData !== 'function') {
+          if (!targetWidth || !targetHeight) {
             return;
           }
 
-          try {
-            instance.setCropBoxData({
-              left: adjustedCanvasData.left,
-              top: adjustedCanvasData.top,
-              width: adjustedCanvasData.width,
-              height: adjustedCanvasData.height
-            });
-          } catch (error) {
-            console.warn('TinyMCE7 Cropper: Failed to adjust crop box after rotation.', error);
+          canvasWrapper.style.flex = '0 0 auto';
+          canvasWrapper.style.width = targetWidth + 'px';
+          canvasWrapper.style.height = targetHeight + 'px';
+
+          const widthScale = targetWidth / canvasWidth;
+          const heightScale = targetHeight / canvasHeight;
+          const scale = Math.min(widthScale, heightScale);
+          const displayWidth = canvasWidth * scale;
+          const displayHeight = canvasHeight * scale;
+          const offsetLeft = (targetWidth - displayWidth) / 2;
+          const offsetTop = (targetHeight - displayHeight) / 2;
+
+          if (typeof instance.setCanvasData === 'function') {
+            try {
+              instance.setCanvasData({
+                left: offsetLeft,
+                top: offsetTop,
+                width: displayWidth,
+                height: displayHeight
+              });
+            } catch (error) {
+              console.warn('TinyMCE7 Cropper: Failed to resize canvas after rotation.', error);
+            }
+          }
+
+          if (typeof instance.setCropBoxData === 'function') {
+            try {
+              instance.setCropBoxData({
+                left: offsetLeft,
+                top: offsetTop,
+                width: displayWidth,
+                height: displayHeight
+              });
+            } catch (error) {
+              console.warn('TinyMCE7 Cropper: Failed to adjust crop box after rotation.', error);
+            }
           }
         });
       }
@@ -512,6 +530,12 @@
         }
       });
 
+      registerListener(window, 'resize', function () {
+        if (cropperInstance) {
+          fitCropBoxToImageBounds(cropperInstance);
+        }
+      });
+
       toolbar.addEventListener('click', function (event) {
         const target = event.target;
         if (!(target instanceof HTMLElement)) {
@@ -538,6 +562,7 @@
             break;
           case 'reset':
             cropperInstance.reset();
+            fitCropBoxToImageBounds(cropperInstance);
             break;
           default:
             break;
@@ -550,6 +575,20 @@
           if (typeof cropperConfig.aspectRatio !== 'number') {
             cropperConfig.aspectRatio = NaN;
           }
+          const userReady = typeof cropperConfig.ready === 'function' ? cropperConfig.ready : null;
+          cropperConfig.ready = function () {
+            if (typeof userReady === 'function') {
+              try {
+                userReady.apply(this, arguments);
+              } catch (error) {
+                console.error('TinyMCE7 Cropper: User provided ready hook failed.', error);
+              }
+            }
+            const activeInstance = this && typeof this.getCanvasData === 'function' ? this : cropperInstance;
+            if (activeInstance) {
+              fitCropBoxToImageBounds(activeInstance);
+            }
+          };
           cropperInstance = new CropperClass(image, cropperConfig);
         } catch (error) {
           console.error('TinyMCE7 Cropper: Failed to initialise.', error);
