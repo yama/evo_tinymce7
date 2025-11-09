@@ -26,6 +26,7 @@
       "zoomOut": "縮小"
     },
     "cropperOptions": {
+      "viewMode": 1,
       "dragMode": "move"
     }
   },
