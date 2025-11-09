@@ -22,8 +22,8 @@
   const options = Object.assign(
     {
       enabled: false,
-      cssUrl: 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css',
-      jsUrl: 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js',
+      cssUrl: 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.1/cropper.min.css',
+      jsUrl: 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.1/cropper.min.js',
       enableDoubleClick: true,
       outputMimeType: 'image/png',
       outputQuality: 0.92,
