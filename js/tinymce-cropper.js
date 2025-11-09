@@ -6,7 +6,6 @@
     modalTitle: '画像の編集',
     apply: '適用',
     cancel: 'キャンセル',
-    crop: '切り抜き',
     rotateLeft: '左回転',
     rotateRight: '右回転',
     reset: 'リセット',
@@ -212,7 +211,6 @@
       dialog.appendChild(toolbar);
 
       const toolbarButtons = [
-        { action: 'crop', label: options.labels.crop },
         { action: 'rotate-left', label: options.labels.rotateLeft },
         { action: 'rotate-right', label: options.labels.rotateRight },
         { action: 'zoom-in', label: options.labels.zoomIn },
@@ -220,19 +218,11 @@
         { action: 'reset', label: options.labels.reset }
       ];
 
-      let cropButton = null;
-
       toolbarButtons.forEach(function (buttonConfig) {
         const button = document.createElement('button');
         button.type = 'button';
         button.dataset.action = buttonConfig.action;
         button.textContent = buttonConfig.label;
-
-        if (buttonConfig.action === 'crop') {
-          button.disabled = true;
-          cropButton = button;
-        }
-
         toolbar.appendChild(button);
       });
 
@@ -351,9 +341,6 @@
         if (!cropperInstance || !action) return;
 
         switch (action) {
-          case 'crop':
-            cropperInstance.crop();
-            break;
           case 'rotate-left':
             cropperInstance.rotate(-90);
             break;
@@ -368,7 +355,6 @@
             break;
           case 'reset':
             cropperInstance.reset();
-            if (cropButton) cropButton.disabled = true;
             break;
         }
       });
@@ -379,17 +365,6 @@
           if (typeof cropperConfig.aspectRatio !== 'number') {
             cropperConfig.aspectRatio = NaN;
           }
-
-          cropperConfig.cropstart = function () {
-            if (cropButton) cropButton.disabled = false;
-          };
-
-          cropperConfig.ready = function () {
-            if (cropperInstance && cropButton) {
-              const cropBoxData = cropperInstance.getCropBoxData();
-              cropButton.disabled = !cropBoxData || cropBoxData.width === 0;
-            }
-          };
 
           cropperInstance = new CropperClass(image, cropperConfig);
         } catch (error) {
