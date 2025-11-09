@@ -27,7 +27,7 @@
     },
     "cropperOptions": {
       "viewMode": 1,
-      "autoCropArea": 1
+      "dragMode": "move"
     }
   },
   "license_key": "gpl"
