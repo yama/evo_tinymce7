@@ -192,8 +192,8 @@
 
       const image = document.createElement('img');
       image.alt = options.labels.modalTitle;
-      image.src = absoluteSrc;
       image.crossOrigin = 'anonymous';
+      image.src = absoluteSrc;
       canvasWrapper.appendChild(image);
       dialog.appendChild(canvasWrapper);
 
