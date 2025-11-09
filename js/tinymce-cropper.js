@@ -20,6 +20,7 @@
     responsive: true,
     movable: true,
     zoomable: true,
+    zoomOnWheel: true,
     rotatable: true,
     scalable: true,
     checkOrientation: true
