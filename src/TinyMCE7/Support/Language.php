@@ -112,7 +112,8 @@ final class Language
         }
 
         // Pin to TinyMCE 7-compatible language packs to avoid mismatches with newer major versions.
-        return 'https://cdn.jsdelivr.net/npm/@tinymce/tinymce-i18n@7/langs/' . rawurlencode($language) . '.js';
+        // TinyMCE 7 ships its translations under the langs7/ directory in the i18n package.
+        return 'https://cdn.jsdelivr.net/npm/@tinymce/tinymce-i18n@7/langs7/' . rawurlencode($language) . '.js';
     }
 
     public function lexicon(): array
