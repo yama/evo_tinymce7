@@ -55,6 +55,16 @@ Evolution CMS では `assets/plugins/tinymce7/` 配下に設置し、Composer �
 }
 ```
 
+### 言語ファイルの解決順序
+
+TinyMCE の UI 言語は `language` オプションで決まります（未指定時は EVO の manager_language を判定）。言語ファイルは次の優先度で解決します。
+
+1. `assets/plugins/tinymce7/tinymce/js/tinymce/langs/<lang>.js`（公式パッケージをそのまま配置した場合）
+2. `assets/plugins/tinymce7/langs/<lang>.js`（必要最小限の言語ファイルだけを置きたい場合）
+3. CDN: `https://cdn.jsdelivr.net/npm/@tinymce/tinymce-i18n@7/langs/<lang>.js`
+
+デフォルトの CDN は TinyMCE7 向けに固定しており、8 系など別メジャーの i18n パッケージを誤って取得しないようにしています。ローカル配置を選ぶ場合は TinyMCE 公式配布物の `langs/` ディレクトリを上記いずれかの場所へそのままコピーしてください。
+
 ### 画像編集 (`image_cropper` 設定)
 
 `config/manager.json` には `image_cropper` オブジェクトを追加しており、Cropper.js を利用したトリミング／回転／リサイズ機能を制御します。
