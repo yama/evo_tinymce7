@@ -106,20 +106,14 @@ final class Language
 
         foreach ($localPaths as $relativePath) {
             $fullPath = MODX_BASE_PATH . $relativePath;
-            if (is_file($fullPath) && !$this->isPlaceholderLanguagePack($fullPath)) {
-                $languageUrl = MODX_BASE_URL . $relativePath;
-                $version = @filemtime($fullPath);
-                if ($version !== false) {
-                    $languageUrl .= (str_contains($languageUrl, '?') ? '&' : '?') . 'v=' . $version;
-                }
-
-                return $languageUrl;
+            if (is_file($fullPath)) {
+                return MODX_BASE_URL . $relativePath;
             }
         }
 
         // Pin to TinyMCE 7-compatible language packs to avoid mismatches with newer major versions.
-        // TinyMCE ships the v6-format language bundles under langs6/ for TinyMCE 7 as well.
-        return 'https://cdn.jsdelivr.net/npm/@tinymce/tinymce-i18n@7/langs6/' . rawurlencode($language) . '.js';
+        // TinyMCE 7 ships its translations under the langs7/ directory in the i18n package.
+        return 'https://cdn.jsdelivr.net/npm/@tinymce/tinymce-i18n@7/langs7/' . rawurlencode($language) . '.js';
     }
 
     public function lexicon(): array
@@ -206,23 +200,6 @@ final class Language
         }
 
         return $lexicon;
-    }
-
-    private function isPlaceholderLanguagePack(string $path): bool
-    {
-        if ($path === '' || !is_file($path)) {
-            return false;
-        }
-
-        $contents = file_get_contents($path);
-        if ($contents === false) {
-            return false;
-        }
-
-        return (bool)preg_match(
-            "/addI18n\\s*\\(\\s*'[^']+'\\s*,\\s*\\{\\s*}\\s*\\)\\s*;/",
-            $contents
-        );
     }
 
     /**
