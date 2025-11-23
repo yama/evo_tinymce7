@@ -106,7 +106,7 @@ final class Language
 
         foreach ($localPaths as $relativePath) {
             $fullPath = MODX_BASE_PATH . $relativePath;
-            if (is_file($fullPath)) {
+            if (is_file($fullPath) && !$this->isPlaceholderLanguagePack($fullPath)) {
                 return MODX_BASE_URL . $relativePath;
             }
         }
@@ -200,6 +200,23 @@ final class Language
         }
 
         return $lexicon;
+    }
+
+    private function isPlaceholderLanguagePack(string $path): bool
+    {
+        if ($path === '' || !is_file($path)) {
+            return false;
+        }
+
+        $contents = file_get_contents($path);
+        if ($contents === false) {
+            return false;
+        }
+
+        return (bool)preg_match(
+            "/addI18n\\s*\\(\\s*'[^']+'\\s*,\\s*\\{\\s*}\\s*\\)\\s*;/",
+            $contents
+        );
     }
 
     /**
