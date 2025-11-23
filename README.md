@@ -40,7 +40,7 @@ MODX Evolution で最新の TinyMCE エディターを利用できるように�
 * **ツールバー設定**: グローバル設定またはユーザー設定の「TinyMCE7 ツールバー構成」から、シンプル／ベーシック／レガシー／フルの各構成を選択できます。
 * **メニューバー表示**: 必要に応じてメニューバーを表示・非表示に切り替えられます。
 * **TinyMCE 本体の読み込み元**: デフォルトは CDN (`https://cdn.jsdelivr.net/npm/tinymce@7/tinymce.min.js`) です。ローカルで使いたい場合は公式パッケージの `tinymce/` を `assets/plugins/tinymce7/tinymce/` に配置し、設定に `"tinymce_use_local": true` を追加してください。CDN・ローカル問わず別の URL を使う場合は `config/manager.json` や `config/frontend.json` に `"tinymce_script_url"` を指定します。
-* **言語ファイル**: 日本語などの UI 言語はローカルの `assets/plugins/tinymce7/tinymce/js/tinymce/langs/`（または `assets/plugins/tinymce7/langs/`）に置いた公式 `langs/*.js` を優先し、存在しない場合は CDN の TinyMCE7 向け言語パック `@tinymce/tinymce-i18n@7`（`langs7/` ディレクトリ）から自動取得します。初期状態では言語ファイルを同梱していないため、必要な言語だけを配置するか、CDN フォールバックに任せてください。
+* **言語ファイル**: 日本語などの UI 言語はローカルの `assets/plugins/tinymce7/tinymce/js/tinymce/langs/`（または `assets/plugins/tinymce7/langs/`）に置いた公式 `langs/*.js` を優先し、存在しない場合は CDN の TinyMCE7 向け言語パック `@tinymce/tinymce-i18n@7`（`langs/` ディレクトリ）から自動取得します。初期状態では言語ファイルを同梱していないため、必要な言語だけを配置するか、CDN フォールバックに任せてください。
 
 詳細な設定や開発者向け情報は [TECHNICAL.md](docs/TECHNICAL.md) を参照してください。
 
