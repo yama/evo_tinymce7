@@ -98,7 +98,7 @@ final class EditorInitializer
         $configJson = $this->configRepository->encode($config);
 
         $scripts = [
-            $this->scriptFactory->scriptTag($this->scriptFactory->tinymceScriptUrl()),
+            $this->scriptFactory->scriptTag($this->scriptFactory->tinymceScriptUrl($config)),
         ];
 
         $imageCropperJson = json_encode($imageCropperOptions, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);

@@ -37,6 +37,18 @@ Evolution CMS では `assets/plugins/tinymce7/` 配下に設置し、Composer �
 
 更新後は Evolution CMS のキャッシュをクリアして反映させます。
 
+### TinyMCE 本体の読み込み元
+
+`tinymce/js/tinymce/tinymce.min.js` が存在する場合は同梱版を優先して読み込みますが、設定ファイルに `tinymce_script_url` を追加することで読み込み元を上書きできます。
+
+```json
+{
+  "tinymce_script_url": "https://cdn.jsdelivr.net/npm/tinymce@7/tinymce.min.js"
+}
+```
+
+このキーを省略した場合は、ローカルにバンドルが見つからないときのみ既定の CDN (`https://cdn.jsdelivr.net/npm/tinymce@7/tinymce.min.js`) にフォールバックします。
+
 ### 画像編集 (`image_cropper` 設定)
 
 `config/manager.json` には `image_cropper` オブジェクトを追加しており、Cropper.js を利用したトリミング／回転／リサイズ機能を制御します。
