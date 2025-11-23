@@ -1,8 +1,8 @@
 TinyMCE language pack placeholder
 ================================
 
-TinyMCE 7 の UI をローカライズする場合は、公式配布パッケージの `langs/` ディレクトリにあるファイルをこのフォルダー（`assets/plugins/tinymce7/tinymce/js/tinymce/langs/`）へそのままコピーしてください。
+TinyMCE 7 の UI をローカライズする場合は、公式配布パッケージの `langs6/` ディレクトリにあるファイルをこのフォルダー（`assets/plugins/tinymce7/tinymce/js/tinymce/langs/`）へそのままコピーしてください。
 
 必要な言語ファイルだけを置きたい場合は、`assets/plugins/tinymce7/langs/` に `<lang>.js` を配置しても読み込まれます。
 
-ローカルにファイルが無い場合は、TinyMCE 7 用 CDN パッケージ `@tinymce/tinymce-i18n@7` の `langs/` から自動取得します。
+ローカルにファイルが無い場合は、TinyMCE 7 用 CDN パッケージ `@tinymce/tinymce-i18n@7` の `langs6/` から自動取得します。

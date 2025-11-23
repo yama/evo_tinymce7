@@ -112,8 +112,8 @@ final class Language
         }
 
         // Pin to TinyMCE 7-compatible language packs to avoid mismatches with newer major versions.
-        // The i18n package keeps its files under the classic langs/ directory, even for TinyMCE 7.
-        return 'https://cdn.jsdelivr.net/npm/@tinymce/tinymce-i18n@7/langs/' . rawurlencode($language) . '.js';
+        // TinyMCE ships the v6-format language bundles under langs6/ for TinyMCE 7 as well.
+        return 'https://cdn.jsdelivr.net/npm/@tinymce/tinymce-i18n@7/langs6/' . rawurlencode($language) . '.js';
     }
 
     public function lexicon(): array
