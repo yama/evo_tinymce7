@@ -111,9 +111,9 @@ final class Language
             }
         }
 
-        // Pin to TinyMCE 7-compatible language packs to avoid mismatches with newer major versions.
-        // TinyMCE 7 の公式言語パックは `langs/` ディレクトリ配下に配置されている。
-        return 'https://cdn.jsdelivr.net/npm/@tinymce/tinymce-i18n@7/langs/' . rawurlencode($language) . '.js';
+        // No CDN fallback: Tiny Cloud 公式の言語パックはローカル配置前提のため、
+        // 言語ファイルが見つからない場合は language_url を指定しない（TinyMCE 既定 = 英語）。
+        return '';
     }
 
     public function lexicon(): array
