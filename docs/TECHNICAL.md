@@ -39,15 +39,15 @@ Evolution CMS では `assets/plugins/tinymce7/` 配下に設置し、Composer �
 
 ### TinyMCE 本体の読み込み元
 
-`tinymce_script_url` の設定値を最優先で使用し、未設定の場合は CDN (`https://cdn.jsdelivr.net/npm/tinymce7@7/tinymce.min.js`) から読み込みます。パッケージサイズ削減のため TinyMCE 本体は同梱していません。ローカル利用を優先したい場合は公式パッケージの `tinymce/` ディレクトリを `assets/plugins/tinymce7/tinymce/` に配置し、設定ファイルに `"tinymce_use_local": true` を追加してください。CDN・ローカル問わず独自 URL を使う場合は `tinymce_script_url` で上書きできます。
+`tinymce_script_url` の設定値を最優先で使用し、未設定の場合は CDN (`https://cdn.jsdelivr.net/npm/tinymce@7/tinymce.min.js`) から読み込みます。パッケージサイズ削減のため TinyMCE 本体は同梱していません。ローカル利用を優先したい場合は公式パッケージの `tinymce/` ディレクトリを `assets/plugins/tinymce7/tinymce/` に配置し、設定ファイルに `"tinymce_use_local": true` を追加してください。CDN・ローカル問わず独自 URL を使う場合は `tinymce_script_url` で上書きできます。npm パッケージ名は `tinymce` であり、`tinymce7@7` のような名前は存在しないため、誤指定すると `text/plain` で応答されロードに失敗します。
 
 ```json
 {
-  "tinymce_script_url": "https://cdn.jsdelivr.net/npm/tinymce7@7/tinymce.min.js"
+  "tinymce_script_url": "https://cdn.jsdelivr.net/npm/tinymce@7/tinymce.min.js"
 }
 ```
 
-このキーを省略した場合は既定の CDN (`https://cdn.jsdelivr.net/npm/tinymce7@7/tinymce.min.js`) を利用します。ローカル利用を優先したい場合は `"tinymce_use_local": true` を指定したうえで、`assets/plugins/tinymce7/tinymce/js/tinymce/tinymce.min.js` が存在することを確認してください。
+このキーを省略した場合は既定の CDN (`https://cdn.jsdelivr.net/npm/tinymce@7/tinymce.min.js`) を利用します。ローカル利用を優先したい場合は `"tinymce_use_local": true` を指定したうえで、`assets/plugins/tinymce7/tinymce/js/tinymce/tinymce.min.js` が存在することを確認してください。
 
 ```json
 {
