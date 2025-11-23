@@ -39,7 +39,7 @@ Evolution CMS では `assets/plugins/tinymce7/` 配下に設置し、Composer �
 
 ### TinyMCE 本体の読み込み元
 
-`tinymce_script_url` の設定値を最優先で使用し、未設定であれば `tinymce/js/tinymce/tinymce.min.js`（同梱バンドルやローカル設置版）を参照し、存在しない場合のみ CDN にフォールバックします。独自にホストしたい場合は公式パッケージの `tinymce/` ディレクトリを `assets/plugins/tinymce7/tinymce/` に配置してください。CDN を利用する場合は、設定ファイルに `tinymce_script_url` を追加することで読み込み元を上書きできます。
+`tinymce_script_url` の設定値を最優先で使用し、未設定の場合は CDN (`https://cdn.jsdelivr.net/npm/tinymce7@7/tinymce.min.js`) から読み込みます。ローカル利用を優先したい場合は公式パッケージの `tinymce/` ディレクトリを `assets/plugins/tinymce7/tinymce/` に配置し、設定ファイルに `"tinymce_use_local": true` を追加してください。CDN・ローカル問わず独自 URL を使う場合は `tinymce_script_url` で上書きできます。
 
 ```json
 {
@@ -47,7 +47,13 @@ Evolution CMS では `assets/plugins/tinymce7/` 配下に設置し、Composer �
 }
 ```
 
-このキーを省略した場合は、ローカルにバンドルが見つからないときのみ既定の CDN (`https://cdn.jsdelivr.net/npm/tinymce7@7/tinymce.min.js`) にフォールバックします。
+このキーを省略した場合は既定の CDN (`https://cdn.jsdelivr.net/npm/tinymce7@7/tinymce.min.js`) を利用します。ローカル同梱を優先したい場合は `"tinymce_use_local": true` を指定したうえで、`assets/plugins/tinymce7/tinymce/js/tinymce/tinymce.min.js` が存在することを確認してください。
+
+```json
+{
+  "tinymce_use_local": true
+}
+```
 
 ### 画像編集 (`image_cropper` 設定)
 

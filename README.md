@@ -39,7 +39,7 @@ MODX Evolution で最新の TinyMCE エディターを利用できるように�
 
 * **ツールバー設定**: グローバル設定またはユーザー設定の「TinyMCE7 ツールバー構成」から、シンプル／ベーシック／レガシー／フルの各構成を選択できます。
 * **メニューバー表示**: 必要に応じてメニューバーを表示・非表示に切り替えられます。
-* **TinyMCE 本体の読み込み元**: `tinymce_script_url` の設定値を最優先で使用し、指定がなければ `tinymce/js/tinymce/tinymce.min.js`（同梱バンドルやローカル設置版）を参照し、存在しない場合のみ CDN にフォールバックします。デフォルト状態（バンドル同梱時）はローカルを読み込みます。CDN を利用したい場合は `config/manager.json` や `config/frontend.json` に `"tinymce_script_url"` を追加してください（例: `https://cdn.jsdelivr.net/npm/tinymce7@7/tinymce.min.js` のように "tinymce7" を明示して 7 系を指定してください）。
+* **TinyMCE 本体の読み込み元**: デフォルトでは CDN (`https://cdn.jsdelivr.net/npm/tinymce7@7/tinymce.min.js`) から読み込みます。ローカルに設置して使いたい場合は、公式サイトから取得した TinyMCE7 パッケージの `tinymce/` ディレクトリをそのまま `assets/plugins/tinymce7/tinymce/` に配置し、設定ファイルで `"tinymce_use_local": true` を指定してください。CDN・ローカル問わず独自 URL を使いたい場合は `config/manager.json` や `config/frontend.json` に `"tinymce_script_url"` を追加します（例: `https://cdn.jsdelivr.net/npm/tinymce7@7/tinymce.min.js` のように "tinymce7" を明示して 7 系を指定してください）。
 
 詳細な設定や開発者向け情報は [TECHNICAL.md](docs/TECHNICAL.md) を参照してください。
 

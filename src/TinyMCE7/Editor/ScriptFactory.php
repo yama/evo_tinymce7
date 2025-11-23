@@ -12,7 +12,8 @@ final class ScriptFactory
         }
 
         $localPath = MODX_BASE_PATH . 'assets/plugins/tinymce7/tinymce/js/tinymce/tinymce.min.js';
-        if (is_file($localPath)) {
+        $preferLocal = !empty($config['tinymce_use_local']);
+        if ($preferLocal && is_file($localPath)) {
             return MODX_BASE_URL . 'assets/plugins/tinymce7/tinymce/js/tinymce/tinymce.min.js';
         }
 
