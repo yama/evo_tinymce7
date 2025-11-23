@@ -7,12 +7,12 @@
 - 安定版 (1.0.0 以上) に向けた検証のため、互換性の変化や仕様変更が発生する可能性があります。
 - 正式版リリースに際しては設定キーや JSON 構成ファイルの内容が変わる可能性があるため、アップグレード時は変更点を確認してください。
 
-## 同梱ファイルと配置
+## ファイル構成と配置
 - プラグインのエントリーポイント: `plugin.tinymce7.php`
 - 設定ファイル: `config/manager.json`, `config/frontend.json`, `config/toolbar-presets.json`
 - MCPuk 連携スクリプト: `js/mcpuk-picker.js`
 - 画像編集モーダル連携スクリプト: `js/tinymce-cropper.js`
-- TinyMCE バンドル: `tinymce/js/tinymce/`
+- TinyMCE ローカル配置先 (任意): `tinymce/js/tinymce/` に公式 TinyMCE7 パッケージを展開
 - オートローダー: `src/bootstrap.php`
 
 Evolution CMS では `assets/plugins/tinymce7/` 配下に設置し、Composer などの追加ライブラリは不要です。
@@ -39,7 +39,7 @@ Evolution CMS では `assets/plugins/tinymce7/` 配下に設置し、Composer �
 
 ### TinyMCE 本体の読み込み元
 
-`tinymce_script_url` の設定値を最優先で使用し、未設定の場合は CDN (`https://cdn.jsdelivr.net/npm/tinymce7@7/tinymce.min.js`) から読み込みます。ローカル利用を優先したい場合は公式パッケージの `tinymce/` ディレクトリを `assets/plugins/tinymce7/tinymce/` に配置し、設定ファイルに `"tinymce_use_local": true` を追加してください。CDN・ローカル問わず独自 URL を使う場合は `tinymce_script_url` で上書きできます。
+`tinymce_script_url` の設定値を最優先で使用し、未設定の場合は CDN (`https://cdn.jsdelivr.net/npm/tinymce7@7/tinymce.min.js`) から読み込みます。パッケージサイズ削減のため TinyMCE 本体は同梱していません。ローカル利用を優先したい場合は公式パッケージの `tinymce/` ディレクトリを `assets/plugins/tinymce7/tinymce/` に配置し、設定ファイルに `"tinymce_use_local": true` を追加してください。CDN・ローカル問わず独自 URL を使う場合は `tinymce_script_url` で上書きできます。
 
 ```json
 {
@@ -47,7 +47,7 @@ Evolution CMS では `assets/plugins/tinymce7/` 配下に設置し、Composer �
 }
 ```
 
-このキーを省略した場合は既定の CDN (`https://cdn.jsdelivr.net/npm/tinymce7@7/tinymce.min.js`) を利用します。ローカル同梱を優先したい場合は `"tinymce_use_local": true` を指定したうえで、`assets/plugins/tinymce7/tinymce/js/tinymce/tinymce.min.js` が存在することを確認してください。
+このキーを省略した場合は既定の CDN (`https://cdn.jsdelivr.net/npm/tinymce7@7/tinymce.min.js`) を利用します。ローカル利用を優先したい場合は `"tinymce_use_local": true` を指定したうえで、`assets/plugins/tinymce7/tinymce/js/tinymce/tinymce.min.js` が存在することを確認してください。
 
 ```json
 {
