@@ -16,7 +16,7 @@ final class ScriptFactory
             return MODX_BASE_URL . 'assets/plugins/tinymce7/tinymce/js/tinymce/tinymce.min.js';
         }
 
-        return 'https://cdn.jsdelivr.net/npm/tinymce@7/tinymce.min.js';
+        return 'https://cdn.jsdelivr.net/npm/tinymce7@7/tinymce.min.js';
     }
 
     public function scriptTag(string $url): string

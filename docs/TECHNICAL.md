@@ -43,11 +43,11 @@ Evolution CMS では `assets/plugins/tinymce7/` 配下に設置し、Composer �
 
 ```json
 {
-  "tinymce_script_url": "https://cdn.jsdelivr.net/npm/tinymce@7/tinymce.min.js"
+  "tinymce_script_url": "https://cdn.jsdelivr.net/npm/tinymce7@7/tinymce.min.js"
 }
 ```
 
-このキーを省略した場合は、ローカルにバンドルが見つからないときのみ既定の CDN (`https://cdn.jsdelivr.net/npm/tinymce@7/tinymce.min.js`) にフォールバックします。
+このキーを省略した場合は、ローカルにバンドルが見つからないときのみ既定の CDN (`https://cdn.jsdelivr.net/npm/tinymce7@7/tinymce.min.js`) にフォールバックします。
 
 ### 画像編集 (`image_cropper` 設定)
 
