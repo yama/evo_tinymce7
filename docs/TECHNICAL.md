@@ -61,9 +61,9 @@ TinyMCE の UI 言語は `language` オプションで決まります（未指�
 
 1. `assets/plugins/tinymce7/tinymce/js/tinymce/langs/<lang>.js`（公式パッケージをそのまま配置した場合）
 2. `assets/plugins/tinymce7/langs/<lang>.js`（必要最小限の言語ファイルだけを置きたい場合）
-3. CDN: `https://cdn.jsdelivr.net/npm/@tinymce/tinymce-i18n@7/langs/<lang>.js`
+3. CDN: `https://cdn.jsdelivr.net/npm/@tinymce/tinymce-i18n@7/langs7/<lang>.js`
 
-デフォルトの CDN は TinyMCE7 向けに固定しており、8 系など別メジャーの i18n パッケージを誤って取得しないようにしています。ローカル配置を選ぶ場合は TinyMCE 公式配布物の `langs/` ディレクトリを上記いずれかの場所へそのままコピーしてください。
+デフォルトの CDN は TinyMCE7 向けに固定しており、8 系など別メジャーの i18n パッケージを誤って取得しないようにしています。ローカル配置を選ぶ場合は TinyMCE 公式配布物の `langs/` ディレクトリを上記いずれかの場所へそのままコピーしてください（CDN では TinyMCE 7 用に `langs7/` を使用しています）。
 
 ### 画像編集 (`image_cropper` 設定)
 
