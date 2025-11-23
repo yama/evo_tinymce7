@@ -65,6 +65,8 @@ TinyMCE の UI 言語は `language` オプションで決まります（未指�
 
 デフォルトの CDN は TinyMCE7 向けに固定しており、8 系など別メジャーの i18n パッケージを誤って取得しないようにしています。日本語以外の言語を追加する場合は [Tiny Cloud の言語パッケージ](https://www.tiny.cloud/get-tiny/language-packages/) で取得した `langs6/` ディレクトリから必要なファイルだけを上記いずれかの場所へコピーしてください（CDN では TinyMCE 7 用に `langs6/` を使用しています）。
 
+ローカルファイルを検出できた場合は、`filemtime` を使ったバージョン付き URL で読み込むため、翻訳ファイルを入れ替えた直後でもブラウザーキャッシュに邪魔されず最新の言語が反映されます。
+
 ### 画像編集 (`image_cropper` 設定)
 
 `config/manager.json` には `image_cropper` オブジェクトを追加しており、Cropper.js を利用したトリミング／回転／リサイズ機能を制御します。

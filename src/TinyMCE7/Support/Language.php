@@ -107,7 +107,13 @@ final class Language
         foreach ($localPaths as $relativePath) {
             $fullPath = MODX_BASE_PATH . $relativePath;
             if (is_file($fullPath) && !$this->isPlaceholderLanguagePack($fullPath)) {
-                return MODX_BASE_URL . $relativePath;
+                $languageUrl = MODX_BASE_URL . $relativePath;
+                $version = @filemtime($fullPath);
+                if ($version !== false) {
+                    $languageUrl .= (str_contains($languageUrl, '?') ? '&' : '?') . 'v=' . $version;
+                }
+
+                return $languageUrl;
             }
         }
 
