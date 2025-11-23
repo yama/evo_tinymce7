@@ -39,7 +39,7 @@ Evolution CMS では `assets/plugins/tinymce7/` 配下に設置し、Composer �
 
 ### TinyMCE 本体の読み込み元
 
-`tinymce/js/tinymce/tinymce.min.js` が存在する場合は同梱版を優先して読み込みますが、設定ファイルに `tinymce_script_url` を追加することで読み込み元を上書きできます。
+`tinymce/js/tinymce/tinymce.min.js` が存在する場合は同梱版を優先して読み込みます。独自にホストしたい場合は公式パッケージの `tinymce/` ディレクトリを `assets/plugins/tinymce7/tinymce/` に配置してください。CDN を利用する場合は、設定ファイルに `tinymce_script_url` を追加することで読み込み元を上書きできます。
 
 ```json
 {

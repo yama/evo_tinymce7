@@ -39,7 +39,7 @@ MODX Evolution で最新の TinyMCE エディターを利用できるように�
 
 * **ツールバー設定**: グローバル設定またはユーザー設定の「TinyMCE7 ツールバー構成」から、シンプル／ベーシック／レガシー／フルの各構成を選択できます。
 * **メニューバー表示**: 必要に応じてメニューバーを表示・非表示に切り替えられます。
-* **TinyMCE 本体の読み込み元**: `config/manager.json` や `config/frontend.json` に `"tinymce_script_url"` を追加すると、同梱バンドルの代わりに CDN を利用できます（例: `https://cdn.jsdelivr.net/npm/tinymce@7/tinymce.min.js`).
+* **TinyMCE 本体の読み込み元**: `tinymce/js/tinymce/tinymce.min.js` が存在すればローカル版を優先して読み込みます。`config/manager.json` や `config/frontend.json` に `"tinymce_script_url"` を追加すると、同梱バンドルの代わりに CDN を利用できます（例: `https://cdn.jsdelivr.net/npm/tinymce@7/tinymce.min.js`).
 
 詳細な設定や開発者向け情報は [TECHNICAL.md](docs/TECHNICAL.md) を参照してください。
 
