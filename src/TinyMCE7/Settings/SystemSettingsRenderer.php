@@ -53,7 +53,7 @@ final class SystemSettingsRenderer
         ];
 
         $html = [];
-        $cssUrl = MODX_BASE_URL . 'assets/plugins/tinymce7/tinymce7.settings.css';
+        $cssUrl = MODX_BASE_URL . 'assets/plugins/tinymce7/css/tinymce7.settings.css';
         $html[] = '<link rel="stylesheet" type="text/css" href="' . htmlspecialchars($cssUrl, ENT_QUOTES, 'UTF-8') . '">';
         $html[] = '<table id="editorRow_TinyMCE7" class="settings editorRow">';
         $html[] = '  <tr class="row1">';
