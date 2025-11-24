@@ -178,7 +178,7 @@ final class Language
         $languageVariants = $this->languageVariants($language);
 
         $paths = [];
-        $srcLangDir = dirname(__DIR__, 2) . '/lang';
+        $srcLangDir = dirname(__DIR__) . '/lang';
         foreach ($languageVariants as $variant) {
             $paths[] = $srcLangDir . "/{$variant}.inc.php";
             $paths[] = $srcLangDir . "/{$variant}.php";
