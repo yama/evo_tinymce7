@@ -178,7 +178,10 @@ final class Language
         $languageVariants = $this->languageVariants($language);
 
         $paths = [];
+        $srcLangDir = dirname(__DIR__, 2) . '/lang';
         foreach ($languageVariants as $variant) {
+            $paths[] = $srcLangDir . "/{$variant}.inc.php";
+            $paths[] = $srcLangDir . "/{$variant}.php";
             $paths[] = MODX_BASE_PATH . "manager/includes/lang/{$variant}/tinymce7.inc.php";
             $paths[] = MODX_BASE_PATH . "manager/includes/lang/{$variant}/tinymce7.php";
             $paths[] = MODX_BASE_PATH . "assets/plugins/tinymce7/langs/mgr/{$variant}.inc.php";
