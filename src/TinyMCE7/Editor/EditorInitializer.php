@@ -75,7 +75,10 @@ final class EditorInitializer
         }
 
         if (empty($config['language_url'])) {
-            $config['language_url'] = $this->language->languageUrl((string)$config['language']);
+            $languageUrl = $this->language->languageUrl((string)$config['language']);
+            if ($languageUrl !== '') {
+                $config['language_url'] = $languageUrl;
+            }
         }
 
         // URL handling configuration
@@ -98,7 +101,7 @@ final class EditorInitializer
         $configJson = $this->configRepository->encode($config);
 
         $scripts = [
-            $this->scriptFactory->scriptTag($this->scriptFactory->tinymceScriptUrl()),
+            $this->scriptFactory->scriptTag($this->scriptFactory->tinymceScriptUrl($config)),
         ];
 
         $imageCropperJson = json_encode($imageCropperOptions, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);

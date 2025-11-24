@@ -7,12 +7,12 @@
 - 安定版 (1.0.0 以上) に向けた検証のため、互換性の変化や仕様変更が発生する可能性があります。
 - 正式版リリースに際しては設定キーや JSON 構成ファイルの内容が変わる可能性があるため、アップグレード時は変更点を確認してください。
 
-## 同梱ファイルと配置
+## ファイル構成と配置
 - プラグインのエントリーポイント: `plugin.tinymce7.php`
 - 設定ファイル: `config/manager.json`, `config/frontend.json`, `config/toolbar-presets.json`
 - MCPuk 連携スクリプト: `js/mcpuk-picker.js`
 - 画像編集モーダル連携スクリプト: `js/tinymce-cropper.js`
-- TinyMCE バンドル: `tinymce/js/tinymce/`
+- TinyMCE ローカル配置先 (任意): `tinymce/js/tinymce/` に公式 TinyMCE7 パッケージを展開
 - オートローダー: `src/bootstrap.php`
 
 Evolution CMS では `assets/plugins/tinymce7/` 配下に設置し、Composer などの追加ライブラリは不要です。
@@ -36,6 +36,33 @@ Evolution CMS では `assets/plugins/tinymce7/` 配下に設置し、Composer �
 | `toolbar-presets.json` | 管理画面のプリセット選択肢（simple/basic/legacy/full など）を定義します。|
 
 更新後は Evolution CMS のキャッシュをクリアして反映させます。
+
+### TinyMCE 本体の読み込み元
+
+`tinymce_script_url` を指定していればその URL を使用し、未指定の場合は既定の CDN (`https://cdn.jsdelivr.net/npm/tinymce@7/tinymce.min.js`) から読み込みます。ローカルで使いたい場合は公式パッケージの `tinymce/` を `assets/plugins/tinymce7/tinymce/` に配置し、設定ファイルに `"tinymce_use_local": true` を追加してください。CDN・ローカル問わず独自 URL を使う場合は `tinymce_script_url` で上書きできます。
+
+```json
+{
+  "tinymce_script_url": "https://cdn.jsdelivr.net/npm/tinymce@7/tinymce.min.js"
+}
+```
+
+このキーを省略した場合は既定の CDN (`https://cdn.jsdelivr.net/npm/tinymce@7/tinymce.min.js`) を利用します。ローカル利用を優先したい場合は `"tinymce_use_local": true` を指定したうえで、`assets/plugins/tinymce7/tinymce/js/tinymce/tinymce.min.js` が存在することを確認してください。
+
+```json
+{
+  "tinymce_use_local": true
+}
+```
+
+### 言語ファイルの解決順序
+
+TinyMCE の UI 言語は `language` オプションで決まります（未指定時は EVO の manager_language を判定）。言語ファイルは次の優先度で解決します。
+
+1. `assets/plugins/tinymce7/tinymce/js/tinymce/langs/<lang>.js`（公式パッケージをそのまま配置した場合）
+2. `assets/plugins/tinymce7/langs/<lang>.js`（必要最小限の言語ファイルだけを置きたい場合）
+
+Tiny Cloud 公式の言語パック配布はダウンロード前提で CDN はありません。`language_url` が見つからない場合は TinyMCE 既定の英語 UI で表示されます。必要な言語だけを上記のいずれかの場所へコピーしてください。
 
 ### 画像編集 (`image_cropper` 設定)
 
