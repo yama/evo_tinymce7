@@ -99,10 +99,11 @@ final class Language
         }
 
         $languageFile = $language . '.js';
-        $localPaths = [
-            'assets/plugins/tinymce7/tinymce/js/tinymce/langs/' . $languageFile,
-            'assets/plugins/tinymce7/langs/' . strtolower($language) . '.js',
-        ];
+        $languageDir = 'assets/plugins/tinymce7/tinymce/js/tinymce/langs/';
+        $localPaths = [$languageDir . $languageFile];
+        if (strcasecmp($language, strtolower($language)) !== 0) {
+            $localPaths[] = $languageDir . strtolower($language) . '.js';
+        }
 
         foreach ($localPaths as $relativePath) {
             $fullPath = MODX_BASE_PATH . $relativePath;

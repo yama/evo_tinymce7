@@ -59,10 +59,9 @@ Evolution CMS では `assets/plugins/tinymce7/` 配下に設置し、Composer �
 
 TinyMCE の UI 言語は `language` オプションで決まります（未指定時は EVO の manager_language を判定）。言語ファイルは次の優先度で解決します。
 
-1. `assets/plugins/tinymce7/tinymce/js/tinymce/langs/<lang>.js`（公式パッケージをそのまま配置した場合）
-2. `assets/plugins/tinymce7/langs/<lang>.js`（必要最小限の言語ファイルだけを置きたい場合）
+1. `assets/plugins/tinymce7/tinymce/js/tinymce/langs/<lang>.js` に配置した公式パッケージのファイルを読み込みます（ファイル名は小文字でも読み込めます）。
 
-Tiny Cloud 公式の言語パック配布はダウンロード前提で CDN はありません。`language_url` が見つからない場合は TinyMCE 既定の英語 UI で表示されます。必要な言語だけを上記のいずれかの場所へコピーしてください。
+Tiny Cloud 公式の言語パック配布はダウンロード前提で CDN はありません。`language_url` が見つからない場合は TinyMCE 既定の英語 UI で表示されます。必要な言語だけを上記のフォルダーへコピーしてください。
 
 ### 画像編集 (`image_cropper` 設定)
 

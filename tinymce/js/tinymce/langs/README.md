@@ -4,7 +4,6 @@ TinyMCE 7 の UI をローカライズする場合は、公式配布パッケー
 
 実装は次の順序でローカル言語ファイルを探します。
 
-1. `assets/plugins/tinymce7/tinymce/js/tinymce/langs/<lang>.js`（公式パッケージをそのまま配置した場合）
-2. `assets/plugins/tinymce7/langs/<lang>.js`（必要な言語だけを手動で置く場合。ファイル名は小文字でも読み込まれます）
+1. `assets/plugins/tinymce7/tinymce/js/tinymce/langs/<lang>.js`（公式パッケージをそのまま配置した場合。ファイル名は小文字でも読み込まれます）
 
-どちらの場所にもファイルが無い場合は `language_url` を指定せず、TinyMCE 既定の英語 UI になります（CDN フォールバックはありません）。
+ファイルが無い場合は `language_url` を指定せず、TinyMCE 既定の英語 UI になります（CDN フォールバックはありません）。
