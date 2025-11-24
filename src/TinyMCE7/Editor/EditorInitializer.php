@@ -75,7 +75,10 @@ final class EditorInitializer
         }
 
         if (empty($config['language_url'])) {
-            $config['language_url'] = $this->language->languageUrl((string)$config['language']);
+            $languageUrl = $this->language->languageUrl((string)$config['language']);
+            if ($languageUrl !== '') {
+                $config['language_url'] = $languageUrl;
+            }
         }
 
         // URL handling configuration
